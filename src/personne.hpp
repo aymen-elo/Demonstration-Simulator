@@ -4,9 +4,6 @@
 #define PERSONNE_HPP
 
 
-
-
-
 struct Position {
     int x;
     int y;
@@ -19,16 +16,13 @@ class Personne {
         int id;
         Position position;
 
-    public: 
-        // Constructeur
-    Personne                (std::string nom, int id, Position position);  
-    ~Personne               ();
+    public:
+        Personne(std::string nom, int id, Position position);
+        ~Personne();
 
-    // Getters
-    std::string getNom() const; 
-    int getId() const; 
-    Position getPosition() const; 
-
+        std::string getNom() const;
+        int getId() const;
+        Position getPosition() const;
 };
 
 

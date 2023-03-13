@@ -8,20 +8,19 @@ struct Member {
   Member *next;
 };
 
-// Constructor
-Groupe::Groupe(std::string n, std::string cl) {
-  this->nom = n;
-  this->couleur = cl;
+Groupe::Groupe(std::string name, std::string color) {
+  this->nom = name;
+  this->couleur = color;
   this->taille = 0;
   this->leader = nullptr;
   this->dernier = nullptr;
   creerGroupe();
 }
 
-// Getters
+
 int Groupe::getSize() const { return this->taille; }
 
-std::string Groupe::getNomGroupe() const { return this->nom; }
+std::string Groupe::getNom() const { return this->nom; }
 
 std::string Groupe::getColor() const { return this->couleur; }
 

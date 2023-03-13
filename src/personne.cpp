@@ -7,22 +7,22 @@ struct Position {
     int y;
 };
 
-Personne::Personne(std::string n, int id, Position pos)
-    : nom(n), id(id), position(pos)
-{}
+Personne::Personne(std::string n, int id, Position pos){
 
-std::string Personne::getNom() const
-{
+}
+
+std::string Personne::getNom() const {
     return nom;
 }
 
-int Personne::getId() const{
+int Personne::getId() const {
     return id; 
 }
- Position Personne::getPosition() const{
-    return position;
- }
- Personne::~Personne(){
-    
- }; 
 
+Position Personne::getPosition() const {
+    return position;
+}
+
+Personne::~Personne() {
+
+}

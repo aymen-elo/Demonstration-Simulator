@@ -1,66 +1,57 @@
 #ifndef GROUPE_HPP
 #define GROUPE_HPP
 
-#include<string>
+#include <string>
 #include <unordered_map>
-//////////////////////////
-// We are interested in the access to a person from the identifier in the group
-// The time complexity must be a Θ(1). So I use Hashtable here // 
+#include <list>
+/////////////////////////////////////////////////////////////////////////////////
+// We are interested in the access to a person from the identifier in the group//
+// The time complexity must be a Θ(1). So I use Hashtable here                 //
 #include "personne.hpp"
 
 class Groupe {
-private:
-    std::string nom;
-    std::string couleur;
-    int taille;
-    Personne* leader;
-    Personne* dernier;
-    std::list<Personne> personnes;
-    std::unordered_map<int, Personne*> groupe;
-
-public:
-    Groupe(std::string nom, std::string couleur);
-    ~Groupe();
-    //Getters
-    int getSize() const; 
-    std::string getNomGroupe() const; 
-    std::string getColor() const; 
-
-  //////////////////////OPERATIONS///////////////
-  
-    std::unordered_map<int, Personne*> creerGroupe(); 
-    // Insert a person with the given name //
-    void insererPersonne(Personne* personne);
-    // Remove the person with the given id //
-    void supprimerPersonne(int id);
-    //Remove leader of the group //
-    void supprimerLeader();
-
-    //Returns the person with the given identifier //
-    Personne* getPersonne(int id) const;
-    //Returns the leader of the group //
-    Personne* getLeader() const;
-
-    class Iterator {
     private:
-        Personne* current;
-
+        std::string nom;
+        std::string couleur;
+        int taille;
+        Personne* leader;
+        Personne* dernier;
+        std::list<Personne> personnes;
+        std::unordered_map<int, Personne*> groupe;
 
     public:
-        Iterator(Personne* personne);
-        Personne* operator*() const;
-        Iterator& operator++();
-        bool operator==(const Iterator& other) const;
-        bool operator!=(const Iterator& other) const;
+        Groupe(std::string nom, std::string couleur);
+        ~Groupe();
 
-  
-  
-    };
+        int getSize() const; 
+        std::string getNom() const; 
+        std::string getColor() const; 
+        Personne* getPersonne(int id) const;
+        Personne* getLeader() const;
 
-    Iterator begin() const;
-    Iterator end() const;
+        std::unordered_map<int, Personne*> creerGroupe(); 
+        // Insert a person with the given name //
+        void insererPersonne(Personne* personne);
+        // Remove the person with the given id //
+        void supprimerPersonne(int id);
+        //Remove leader of the group //
+        void supprimerLeader();
 
 
+        class Iterator {
+            private:
+                Personne* current;
+
+            public:
+                Iterator(Personne* personne);
+                Personne* operator*() const;
+                Iterator& operator++();
+                bool operator==(const Iterator& other) const;
+                bool operator!=(const Iterator& other) const;
+        };
+
+        Iterator begin() const;
+        Iterator end() const;
 }; 
 
 
