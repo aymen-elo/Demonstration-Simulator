@@ -1,25 +1,23 @@
+#include <string>
+#include <unordered_map>
+#include <list>
 #ifndef GROUP_HPP
 #define GROUP_HPP
 
 #include "person.hpp"
 
-#include <string>
-#include <unordered_map>
-#include <list>
 /////////////////////////////////////////////////////////////////////////////////
 // We are interested in the access to a person from the identifier in the group//
 // The time complexity must be a Θ(1). So I use Hashtable here                 //
 
-
 class Group {
     private:
-        int size;
         std::string name;
         std::string color;
         Person* leader;
         Person* last;
-        std::list<Person> people;
-        std::unordered_map<int, Person*> group;
+        std::list<Person> peopleQ;
+        std::unordered_map<int, Person*> groupMap;
 
     public:
         Group(std::string name, std::string color);
@@ -31,7 +29,8 @@ class Group {
         Person* getPerson(int id) const;
         Person* getLeader() const;
 
-        std::unordered_map<int, Person*> createGroup();
+        //TODO: discuss if this should be in constructor
+        //std::unordered_map<int, Person*> createGroup();
 
         void insertPerson(Person* person);
         void removePerson(int id);
@@ -70,4 +69,4 @@ private:
     std::unordered_map<std::string, std::shared_ptr<Person>> persons_;
 }; */
 
-#endif // Group_HPP
+#endif
