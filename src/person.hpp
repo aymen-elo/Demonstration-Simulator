@@ -3,6 +3,10 @@
 #ifndef PERSON_HPP
 #define PERSON_HPP
 
+struct Position {
+    int x;
+    int y;
+};
 
 class Person {
     private:
@@ -11,7 +15,7 @@ class Person {
         Position position;
 
     public:
-        Person(int id, std::string name, Position position);
+        Person(int id, std::string name, Position pos);
         ~Person();
 
         int getId() const;

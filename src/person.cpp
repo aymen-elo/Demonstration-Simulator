@@ -4,16 +4,13 @@ using namespace std;
 
 
 
-struct Position {
-    int x;
-    int y;
-};
-
-Person::Person(int id, std::string name, Position pos){
-
+Person::Person(int id, string name, Position pos){
+    this->id = id;
+    this->name = name;
+    this->position = pos;
 }
 
-std::string Person::getName() const {
+string Person::getName() const {
     return this->name;
 }
 
@@ -26,5 +23,4 @@ Position Person::getPosition() const {
 }
 
 Person::~Person() {
-
 }
