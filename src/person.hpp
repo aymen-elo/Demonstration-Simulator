@@ -1,27 +1,23 @@
-#include <iostream>
-#include <string>
 #ifndef PERSON_HPP
 #define PERSON_HPP
 
-struct Position {
-    int x;
-    int y;
-};
+#include <string>
+#include <utility>
 
 class Person {
-    private:
-        int id;
-        std::string name;
-        Position position;
+private:
+    std::string name;
+    int id;
+    std::pair<int, int> position;
 
-    public:
-        Person(int id, std::string name, Position pos);
-        ~Person();
+public:
+    Person(const std::string& name, int id);
+    ~Person();
 
-        int getId() const;
-        std::string getName() const;
-        Position getPosition() const;
+    std::string getName() const;
+    int getID() const;
+    std::pair<int, int> getPosition() const;
+    void setPosition(const std::pair<int, int>& newPosition);
 };
-
 
 #endif
