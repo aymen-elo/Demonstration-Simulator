@@ -3,20 +3,17 @@
 #include <iostream>
 using namespace std;
 
-Group::Group(string name, string color)
-{
+Group::Group(string name, string color){
   this->name = name;
   this->color = color;
   this->leader = nullptr;
   this->last = nullptr;
 }
 
-int Group::getSize() const
-{
+int Group::getSize() const{
   int size = 0;
   Node *temp = leader;
-  while (temp != nullptr)
-  {
+  while (temp != nullptr){
     size++;
     temp = temp->next;
   }
@@ -33,8 +30,7 @@ string Group::getColor() const{
 
 Person Group::getPerson(int id) const{
   auto it = this->groupMap.find(id);
-  if (it != groupMap.end())
-  {
+  if (it != groupMap.end()){
     std::cout << "Found person " << it->second->p.getName() << std::endl;
     return it->second->p;
   }
@@ -54,22 +50,18 @@ void Group::insertPerson(Person *person){
   newNode->next = nullptr;
   newNode->prev = nullptr;
   // Check if the person is already in the group
-  if (groupMap.find(person->getID()) != groupMap.end())
-  {
+  if (groupMap.find(person->getID()) != groupMap.end()){
     std::cout << "Person with id " << person->getID() << " already in the group" << std::endl;
     return;
   }
-  else
-  {
+  else{
     // If the linked list is empty, set the new node as both the leader and the last node
-    if (leader == nullptr)
-    {
+    if (leader == nullptr){
       leader = newNode;
       last = newNode;
     }
     // insert new node to the end of linked list
-    else
-    {
+    else{
       last->next = newNode;
       newNode->prev = last;
       last = newNode;
@@ -82,53 +74,41 @@ void Group::insertPerson(Person *person){
 void Group::removePerson(int id){
   auto it = groupMap.find(id);
   /* if id is found in map, remove it*/
-  if (it != groupMap.end())
-  {
+  if (it != groupMap.end()){
     Node *nodeToRemove = it->second;
-    if (nodeToRemove == leader)
-    {
+    if (nodeToRemove == leader){
       leader = leader->next;
     }
-    if (nodeToRemove == last)
-    {
+    if (nodeToRemove == last){
       last = last->prev;
     }
-    if (nodeToRemove->prev != nullptr)
-    {
+    if (nodeToRemove->prev != nullptr){
       nodeToRemove->prev->next = nodeToRemove->next;
     }
-    if (nodeToRemove->next != nullptr)
-    {
+    if (nodeToRemove->next != nullptr){
       nodeToRemove->next->prev = nodeToRemove->prev;
     }
     delete nodeToRemove;
     groupMap.erase(it);
   }
-  else
-  {
+  else{
     std::cout << "Person with id " << id << " not found" << std::endl;
   }
 }
 
 void Group::removeLeader(){
-  for (const auto &rm : groupMap)
-  {
-    if (!groupMap.empty())
-    {
+  for (const auto &rm : groupMap){
+    if (!groupMap.empty()){
       std::cout << " This group is empty " << std::endl;
     }
-    else
-    {
-      if (leader != nullptr)
-      {
+    else{
+      if (leader != nullptr){
         Node *oldLeader = leader;
         leader = leader->next;
-        if (leader != nullptr)
-        {
+        if (leader != nullptr){
           leader->prev = nullptr;
         }
-        else
-        {
+        else{
           last = nullptr;
         }
         delete oldLeader;
@@ -141,4 +121,4 @@ void Group::removeLeader(){
 
 // TODO: iterator impl
 
-Group::~Group() {}
+Group::~Group(){}

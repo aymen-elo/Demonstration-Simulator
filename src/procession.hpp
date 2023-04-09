@@ -1,41 +1,68 @@
-#include "procession.hpp"
+/*Procession <=> Cortege*/
 
-#include <iostream>
-using namespace std;
+#ifndef PROCESSION_HPP
+#define PROCESSION_HPP
 
-Procession::Procession(const std::string &name){
-    this->name = name; 
-}
+#include <vector>
+#include <list>
+#include "group.hpp"
 
+/*
+Procession = Cortège, son nom est le sujet de la manifestation
+Les opérations de Procession sont de complexité constante Θ(1)
+*/
 
-void Procession::addGroup(Group *group){
-    
-    if (groups.empty() ) {
-        groups.push_front(group); 
-    }
-    else {
-        auto it = groups.begin();
-        while (it != groups.end() && (*it)->getColor() <= group->getColor()) {
-            ++it;
+class Procession {
+    private:
+        std::string name;
+        std::list<Group*> groups;
+
+    public:
+        Procession(const std::string & name);
+        ~Procession();
+
+        Person *getPerson(int id);
+
+        void addGroup(Group *group);
+        void removeGroup(const std::string &name);
+        void removePerson(int id);
+
+        void sortColor();
+        void sortSize();
+
+        class iterator {
+            private:
+                std::list<Group*>::iterator group_it;
+
+            public:
+                iterator(std::list<Group*>::iterator it) : group_it(it) {}
+
+                
+                //Opérateur de comparaison pour tester l'égalité de deux itérateurs
+                bool operator==(const iterator& other) const {
+                    return group_it == other.group_it;
+                }
+
+                bool operator!=(const iterator& other) const {
+                    return group_it != other.group_it;
+                }
+
+                iterator operator++() {
+                    ++group_it;
+                    return *this;
+                }
+
+                Group& operator*() const {
+                    return *(*group_it);
+                }
+        };
+        // Méthode begin() pour obtenir un itérateur pointant sur le premier groupe du cortège
+        iterator begin() {
+            return iterator(groups.begin());
         }
-    }
-}
-
-
-void Procession::removeGroup(const std::string &name){
-    for (const auto &rm : groups){
-        if (rm->getName() == name){
-            
+        // Méthode end() pour obtenir un itérateur pointant après le dernier groupe du cortège
+        iterator end() {
+            return iterator(groups.end());
         }
-    }
-}
-Person Procession::*getPerson(int id){}
-void Procession::removePerson(int id){}
-void Procession::sortColor(){}
-void Procession::sortSize(){}
-Procession::~Procession() {
-        for (auto it = groups.begin(); it != groups.end(); ++it) {
-            delete *it;
-        }
-    }
-   
+}; 
+#endif
