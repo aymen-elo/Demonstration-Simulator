@@ -2,25 +2,26 @@
 
 using namespace std;
 
+Person::Person(const std::string &name, int id) : name(name), id(id), position(position) {}
 
+Person::~Person() {}
 
-Person::Person(int id, string name, Position pos){
-    this->id = id;
-    this->name = name;
-    this->position = pos;
+std::string Person::getName() const
+{
+    return name;
 }
 
-string Person::getName() const {
-    return this->name;
+int Person::getID() const
+{
+    return id;
 }
 
-int Person::getId() const {
-    return this->id; 
+std::pair<int, int> Person::getPosition() const
+{
+    return position;
 }
 
-Position Person::getPosition() const {
-    return this->position;
-}
-
-Person::~Person() {
+void Person::setPosition(const std::pair<int, int> &newPosition)
+{
+    position = newPosition;
 }
