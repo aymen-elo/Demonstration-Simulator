@@ -4,7 +4,7 @@
 #include <sstream>
 #include <set>
 #include <time.h>
-#include "manif.hpp"
+#include "demonstration.hpp"
 
 using namespace std;
 
