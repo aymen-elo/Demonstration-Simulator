@@ -11,44 +11,75 @@
 /// because We are also interested in the identification and extraction of a person knowing the identifier//
 /// in case of emergency,                                                                                 //
 /// This is the operations involve inserting or deleting elements in the middle of the structure.         //
-/// So I dicided using LINKED LIST                                                                        //
+/// So I dicided using LINKED LIST as std::list                                                                         //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Procession {
+class Procession
+{
+private:
+    std::string name;
+    std::list<Group*> groups;
+
+public:
+    Procession(const std::string &name);
+    ~Procession();
+
+    /// @brief insertion of a Group into Procession
+    /// @param group
+    void addGroup(Group *group);
+
+    //// @brief deletion of a Group ////
+    //// @param name of the Group ////
+    void removeGroup(const std::string &name);
+
+    /// @brief acces a person in Procession ////
+    /// @param id identifier of the Person ///
+    /// @return return person
+    Person *getPerson(int id);
+
+    /// @brief deletion person in Procession ////
+    /// @param id identifier of the Person
+    void removePerson(int id);
+
+    /// @brief sorting by color of the groups ///
+    void sortColor();
+
+    /// @brief sorting by Size of the groups ///
+    void sortSize();
+
+     // Iterators: a nested class that represents an iterator for the Procession class
+   class iterator {
     private:
-        std::string name;
-        std::vector<Group *> groups;
+        std::list<Group*>::iterator group_it;
 
     public:
-        Procession(const std::string &name);
-        ~Procession();
+        iterator(std::list<Group*>::iterator it) : group_it(it) {}
 
-        /// @brief insertion of a Group into Procession
-        /// @param group
-        void ajouterGroupe(Group *group);
+        
+        //Opérateur de comparaison pour tester l'égalité de deux itérateurs
+        bool operator==(const iterator& other) const {
+            return group_it == other.group_it;
+        }
 
-        //// @brief deletion of a Group ////
-        //// @param name of the Group ////
-        void deleteGroup(const std::string &name);
+        bool operator!=(const iterator& other) const {
+            return group_it != other.group_it;
+        }
 
-        /// @brief acces a person in Procession ////
-        /// @param id identifier of the Person ///
-        /// @return return person
-        Person *getPerson(int id);
+        iterator operator++() {
+            ++group_it;
+            return *this;
+        }
 
-        /// @brief deletion person in Procession ////
-        /// @param id identifier of the Person
-        void removePerson(int id);
-
-        /// @brief sorting by color of the groups ///
-        void sortColor();
-
-        /// @brief sorting by Size of the groups ///
-        void sortSize();
-
-        // Iterators
-        typedef std::vector<Group *>::iterator iterator;
-        iterator begin() { return groups.begin(); }
-        iterator end() { return groups.end(); }
-};
-
+        Group& operator*() const {
+            return *(*group_it);
+        }
+    };
+    // Méthode begin() pour obtenir un itérateur pointant sur le premier groupe du cortège
+    iterator begin() {
+        return iterator(groups.begin());
+    }
+    // Méthode end() pour obtenir un itérateur pointant après le dernier groupe du cortège
+    iterator end() {
+        return iterator(groups.end());
+    }
+}; 
 #endif
