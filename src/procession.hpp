@@ -9,19 +9,14 @@ Procession::Procession(const std::string &name){
 
 
 void Procession::addGroup(Group *group){
-    if (groups.empty() || group->getName() < groups.front()->getName()) {
+    
+    if (groups.empty() ) {
         groups.push_front(group); 
     }
     else {
-        std::list<Group*>::iterator it;
-        for (it = groups.begin(); it != groups.end(); it++) {
-            if ((*it)->getName() > group->getName()) {
-                groups.insert(it, group);
-                break;
-            }
-        }
-        if (it == groups.end()) {
-            groups.push_back(group);
+        auto it = groups.begin();
+        while (it != groups.end() && (*it)->getColor() <= group->getColor()) {
+            ++it;
         }
     }
 }
