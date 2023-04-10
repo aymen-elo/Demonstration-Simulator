@@ -3,23 +3,16 @@
 #include <iostream>
 using namespace std;
 
-Group::Group(string name, string color){
+Group::Group(string name, string color, int size){
     this->name = name;
     this->color = color;
+    this->size = size;
     this->leader = nullptr;
     this->last = nullptr;
 }
 
 int Group::getSize() const{
-    Node *temp = leader;
-
-    //Dans le cas ou la map n'est pas initialisée
-    //On retourne taille = 0
-    if(temp == nullptr){
-        return 0;
-    }else{
-        return this->groupMap.size();
-    }
+    return this->size;
 }
 
 string Group::getName() const{
@@ -77,6 +70,7 @@ void Group::insertPerson(Person *person){
     }
     // Insertion de la personne dans la map
     groupMap.insert({person->getID(), newNode});
+    size++;
 }
 
 void Group::removePerson(int id){
@@ -107,6 +101,7 @@ void Group::removePerson(int id){
 
         delete nodeToRemove;
         groupMap.erase(it);
+        size--;
     }else{
         cout << "Person with id " << id << " not found" << endl;
     }
@@ -132,6 +127,7 @@ void Group::removeLeader(){
     cout << "Leader removed from the group" << endl;
 
     groupMap.erase(groupMap.begin());
+    size--;
 }
 
 // TODO: iterator impl
