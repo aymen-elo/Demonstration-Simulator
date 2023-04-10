@@ -30,24 +30,24 @@ class Procession {
         void sortColor();
         void sortSize();
 
-        class iterator {
+        class ProcessIterator {
             private:
                 std::list<Group*>::iterator group_it;
 
             public:
-                iterator(std::list<Group*>::iterator it) : group_it(it) {}
+                ProcessIterator(std::list<Group*>::iterator it) : group_it(it) {}
 
                 
                 //Opérateur de comparaison pour tester l'égalité de deux itérateurs
-                bool operator==(const iterator& other) const {
+                bool operator==(const ProcessIterator& other) const {
                     return group_it == other.group_it;
                 }
 
-                bool operator!=(const iterator& other) const {
+                bool operator!=(const ProcessIterator& other) const {
                     return group_it != other.group_it;
                 }
 
-                iterator operator++() {
+                ProcessIterator operator++() {
                     ++group_it;
                     return *this;
                 }
@@ -57,12 +57,12 @@ class Procession {
                 }
         };
         // Méthode begin() pour obtenir un itérateur pointant sur le premier groupe du cortège
-        iterator begin() {
-            return iterator(groups.begin());
+        ProcessIterator begin() {
+            return ProcessIterator(groups.begin());
         }
         // Méthode end() pour obtenir un itérateur pointant après le dernier groupe du cortège
-        iterator end() {
-            return iterator(groups.end());
+        ProcessIterator end() {
+            return ProcessIterator(groups.end());
         }
 }; 
 #endif

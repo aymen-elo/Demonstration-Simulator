@@ -43,20 +43,20 @@ class Group {
         void removeLeader();
 
 
-        class Iterator {
+        class GroupIterator {
             private:
                 Person* current;
 
             public:
-                Iterator(Person* person);
+                GroupIterator(Person* person);
                 Person* operator*() const;
-                Iterator& operator++();
-                bool operator==(const Iterator& other) const;
-                bool operator!=(const Iterator& other) const;
+                GroupIterator& operator++();
+                bool operator==(const GroupIterator& other) const;
+                bool operator!=(const GroupIterator& other) const;
         };
 
-        Iterator begin() const;
-        Iterator end() const; 
+        GroupIterator begin() const;
+        GroupIterator end() const; 
 }; 
 
 
