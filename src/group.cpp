@@ -11,13 +11,15 @@ Group::Group(string name, string color){
 }
 
 int Group::getSize() const{
-    int size = 0;
     Node *temp = leader;
-    while (temp != nullptr){
-        size++;
-        temp = temp->next;
+
+    //Dans le cas ou la map n'est pas initialisée
+    //On retourne taille = 0
+    if(temp == nullptr){
+        return 0;
+    }else{
+        return this->groupMap.size();
     }
-    return size;
 }
 
 string Group::getName() const{
