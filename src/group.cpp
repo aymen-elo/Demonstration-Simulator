@@ -74,26 +74,34 @@ void Group::insertPerson(Person *person){
 }
 
 void Group::removePerson(int id){
+
     auto it = groupMap.find(id);
-    /* if id is found in map, remove it*/
+
+    // id trouvé dans la map
     if (it != groupMap.end()){
         Node *nodeToRemove = it->second;
+
         if (nodeToRemove == leader){
-        leader = leader->next;
+            leader = leader->next;
+            leader->prev = nullptr;
         }
+
         if (nodeToRemove == last){
-        last = last->prev;
+            last = last->prev;
+            last->next = nullptr;
         }
+
         if (nodeToRemove->prev != nullptr){
-        nodeToRemove->prev->next = nodeToRemove->next;
+            nodeToRemove->prev->next = nodeToRemove->next;
         }
+
         if (nodeToRemove->next != nullptr){
-        nodeToRemove->next->prev = nodeToRemove->prev;
+            nodeToRemove->next->prev = nodeToRemove->prev;
         }
+
         delete nodeToRemove;
         groupMap.erase(it);
-    }
-    else{
+    }else{
         cout << "Person with id " << id << " not found" << endl;
     }
 }
