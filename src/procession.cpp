@@ -11,8 +11,7 @@ Procession::Procession(const std::string &name){
 void Procession::addGroup(Group *group){
     if (groups.empty() || group->getName() < groups.front()->getName()) {
         groups.push_front(group); 
-    }
-    else {
+    }else{
         std::list<Group*>::iterator it;
         for (it = groups.begin(); it != groups.end(); it++) {
             if ((*it)->getName() > group->getName()) {
@@ -39,8 +38,7 @@ void Procession::removePerson(int id){}
 void Procession::sortColor(){}
 void Procession::sortSize(){}
 Procession::~Procession() {
-        for (auto it = groups.begin(); it != groups.end(); ++it) {
-            delete *it;
-        }
+    for (auto it = groups.begin(); it != groups.end(); ++it) {
+        delete *it;
     }
-   
+}
