@@ -9,6 +9,7 @@ Procession::Procession(const std::string &name){
 
 
 void Procession::addGroup(Group *group){
+
     if (groups.empty() || group->getName() < groups.front()->getName()) {
         groups.push_front(group); 
     }else{
@@ -33,7 +34,17 @@ void Procession::removeGroup(const std::string &name){
         }
     }
 }
-Person Procession::*getPerson(int id){}
+Person Procession::getPerson(int id) const{
+
+    for(Group* g : groups) {
+        
+        auto it = g->getGroupMap().find(id);
+        if(it != g->getGroupMap().end()) {
+            return it->second->p;
+        }
+    }
+}
+
 void Procession::removePerson(int id){}
 void Procession::sortColor(){}
 void Procession::sortSize(){}
