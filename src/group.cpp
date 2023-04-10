@@ -46,28 +46,30 @@ Person Group::getLeader() const{
 }
 
 void Group::insertPerson(Person *person){
-    // Create a new node for the person
+
+    // Si la personne est déjà dans le groupe on ne le rajoute pas
+    if (groupMap.find(person->getID()) != groupMap.end()){
+        cout << "Person with id " << person->getID() << " is already in the group" << endl;
+        return;
+    }
+
+    // Sinon on crée un nouveau maillon
     Node *newNode = new Node;
     newNode->p = *person;
     newNode->next = nullptr;
     newNode->prev = nullptr;
-    // Check if the person is already in the group
-    if (groupMap.find(person->getID()) != groupMap.end()){
-        cout << "Person with id " << person->getID() << " already in the group" << endl;
-        return;
+
+    // La personne est leader + dernier si la liste est vide
+    if (leader == nullptr){
+        leader = newNode;
+        last = newNode;
+    // Sinon, la personne est insérée à la fin de la liste
     }else{
-        // If the linked list is empty, set the new node as both the leader and the last node
-        if (leader == nullptr){
-            leader = newNode;
-            last = newNode;
-        // insert new node to the end of linked list
-        }else{
-            last->next = newNode;
-            newNode->prev = last;
-            last = newNode;
-        }
+        last->next = newNode;
+        newNode->prev = last;
+        last = newNode;
     }
-    // then, add this person in map
+    // Insertion de la personne dans la map
     groupMap.insert({person->getID(), newNode});
 }
 
