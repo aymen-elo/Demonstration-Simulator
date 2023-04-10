@@ -37,12 +37,13 @@ void Procession::removeGroup(const std::string &name){
 Person Procession::getPerson(int id) const{
 
     for(Group* g : groups) {
-        
-        auto it = g->getGroupMap().find(id);
-        if(it != g->getGroupMap().end()) {
-            return it->second->p;
+        Person p = g->getPerson(id);
+
+        if(p.getID() != -1){
+            return p;
         }
     }
+    return Person("INEXISTANT", -1);
 }
 
 void Procession::removePerson(int id){}
