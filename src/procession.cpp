@@ -46,7 +46,18 @@ Person Procession::getPerson(int id) const{
     return Person("INEXISTANT", -1);
 }
 
-void Procession::removePerson(int id){}
+void Procession::removePerson(int id){
+
+    for(Group* g : groups) {
+        Person p = g->getPerson(id);
+
+        if(p.getID() != -1){
+            g->removePerson(id);
+            cout<<"Person removed"<<endl;
+            return;
+        }
+    }
+}
 void Procession::sortColor(){}
 void Procession::sortSize(){}
 Procession::~Procession() {
