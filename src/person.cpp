@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Person::Person(const std::string & name, int id) : name(name), id(id), position(position) {}
+Person::Person(const std::string & name, int id) : name(name), id(id), position({0,0}) {}
 
 Person::~Person() {}
 
