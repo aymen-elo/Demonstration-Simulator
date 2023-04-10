@@ -107,25 +107,25 @@ void Group::removePerson(int id){
 }
 
 void Group::removeLeader(){
-    for (const auto &rm : groupMap){
-        if (!groupMap.empty()){
+
+    if (groupMap.empty()){
         cout << " This group is empty " << endl;
-        }else{
-            if (leader != nullptr){
-                Node *oldLeader = leader;
-                leader = leader->next;
-                if (leader != nullptr){
-                leader->prev = nullptr;
-                }
-                else{
-                last = nullptr;
-                }
-                delete oldLeader;
-                cout << "Leader removed from the group" << endl;
-            }
-            groupMap.erase(groupMap.begin());
-        }
+        return;
     }
+
+    Node *oldLeader = leader;
+    leader = leader->next;
+
+    if (leader != nullptr){
+        leader->prev = nullptr;
+    }else{
+        last = nullptr;
+    }
+
+    delete oldLeader;
+    cout << "Leader removed from the group" << endl;
+
+    groupMap.erase(groupMap.begin());
 }
 
 // TODO: iterator impl
