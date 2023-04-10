@@ -32,16 +32,16 @@ string Group::getColor() const{
 
 Person Group::getPerson(int id) const{
     auto it = this->groupMap.find(id);
+
     if (it != groupMap.end()){
-        std::cout << "Found person " << it->second->p.getName() << std::endl;
+        cout << "Found person " << it->second->p.getName() << endl;
         return it->second->p;
     }
-    // si je peux pas trouver la personne, qu'est-ce que je retourne?
 }
 
 Person Group::getLeader() const{
     auto it = groupMap.begin();
-    std::cout << "Leader of group is " << std::endl;
+    cout << "Leader of group is " << endl;
     return it->second->p;
 }
 
@@ -53,7 +53,7 @@ void Group::insertPerson(Person *person){
     newNode->prev = nullptr;
     // Check if the person is already in the group
     if (groupMap.find(person->getID()) != groupMap.end()){
-        std::cout << "Person with id " << person->getID() << " already in the group" << std::endl;
+        cout << "Person with id " << person->getID() << " already in the group" << endl;
         return;
     }else{
         // If the linked list is empty, set the new node as both the leader and the last node
@@ -92,14 +92,14 @@ void Group::removePerson(int id){
         groupMap.erase(it);
     }
     else{
-        std::cout << "Person with id " << id << " not found" << std::endl;
+        cout << "Person with id " << id << " not found" << endl;
     }
 }
 
 void Group::removeLeader(){
     for (const auto &rm : groupMap){
         if (!groupMap.empty()){
-        std::cout << " This group is empty " << std::endl;
+        cout << " This group is empty " << endl;
         }else{
             if (leader != nullptr){
                 Node *oldLeader = leader;
@@ -111,7 +111,7 @@ void Group::removeLeader(){
                 last = nullptr;
                 }
                 delete oldLeader;
-                std::cout << "Leader removed from the group" << std::endl;
+                cout << "Leader removed from the group" << endl;
             }
             groupMap.erase(groupMap.begin());
         }
