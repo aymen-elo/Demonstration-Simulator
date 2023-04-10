@@ -12,14 +12,16 @@ Group = Groupe s'agit de plusieurs personnes rangées dans leur ordre d’arriv�
 Les opérations de Group sont de complexité constante Θ(1)
 */
 
+struct Node {
+    Person p;
+    Node* next;
+    Node* prev; 
+    Node() : p(p.getName(), p.getID()), next(nullptr), prev(nullptr) {}
+};
+
 class Group {
     private:
-        struct Node {
-            Person p;
-            Node* next;
-            Node* prev; 
-            Node() : p(p.getName(), p.getID()), next(nullptr), prev(nullptr) {}
-        };
+        
         std::string name;
         std::string color;
         Node* leader;
@@ -37,6 +39,7 @@ class Group {
         std::string getColor() const;
         Person getPerson(int id) const;
         Person getLeader() const;
+        std::unordered_map<int, Node* > getGroupMap();
 
         void insertPerson(Person* person);
         void removePerson(int id);

@@ -36,6 +36,8 @@ Person Group::getPerson(int id) const{
     if (it != groupMap.end()){
         cout << "Found person " << it->second->p.getName() << endl;
         return it->second->p;
+    }else{
+        return Person("INEXISTANT", -1);
     }
 }
 
@@ -43,6 +45,10 @@ Person Group::getLeader() const{
     auto it = groupMap.begin();
     cout << "Leader of group is " << endl;
     return it->second->p;
+}
+
+std::unordered_map<int, Node* > Group::getGroupMap(){
+    return this->groupMap;
 }
 
 void Group::insertPerson(Person *person){
