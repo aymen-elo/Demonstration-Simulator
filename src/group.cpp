@@ -3,152 +3,140 @@
 #include <iostream>
 using namespace std;
 
-Group::Group(string name, string color)
-{
-  this->name = name;
-  this->color = color;
-  this->leader = nullptr;
-  this->last = nullptr;
+Group::Group(string name, string color, int size){
+    this->name = name;
+    this->color = color;
+    this->size = size;
+    this->leader = nullptr;
+    this->last = nullptr;
 }
 
-int Group::getSize() const
-{
-  int size = 0;
-  Node *temp = leader;
-  while (temp != nullptr)
-  {
-    size++;
-    temp = temp->next;
-  }
-  return size;
+int Group::getSize() const{
+    return this->size;
 }
 
 string Group::getName() const{
-  return this->name;
+    return this->name;
 }
 
 string Group::getColor() const{
-  return this->color;
+    return this->color;
 }
 
 Person Group::getPerson(int id) const{
-  auto it = this->groupMap.find(id);
-  if (it != groupMap.end())
-  {
-    std::cout << "Found person " << it->second->p.getName() << std::endl;
-    return it->second->p;
-  }
-  else{
-    throw std::runtime_error("Person with id " + std::to_string(id) + " not found");
-  }
-  // si je peux pas trouver la personne, qu'est-ce que je retourne?
+    auto it = this->groupMap.find(id);
+
+    if (it != groupMap.end()){
+        cout << "Found person " << it->second->p.getName() << endl;
+        return it->second->p;
+    }else{
+        return Person("INEXISTANT", -1);
+    }
 }
 
 Person Group::getLeader() const{
-  auto it = groupMap.begin();
-  std::cout << "Leader of group is " << std::endl;
-  return it->second->p;
+    auto it = groupMap.begin();
+    cout << "Leader of group is " << endl;
+    return it->second->p;
+}
+
+std::unordered_map<int, Node* > Group::getGroupMap(){
+    return this->groupMap;
 }
 
 void Group::insertPerson(Person *person){
-  // Create a new node for the person
-  Node *newNode = new Node;
-  newNode->p = *person;
-  newNode->next = nullptr;
-  newNode->prev = nullptr;
-  // Check if the person is already in the group
-  if (groupMap.find(person->getID()) != groupMap.end())
-  {
-    std::cout << "Person with id " << person->getID() << " already in the group" << std::endl;
-    return;
-  }
-  else
-  {
-    // If the linked list is empty, set the new node as both the leader and the last node
-    if (leader == nullptr)
-    {
-      leader = newNode;
-      last = newNode;
+
+    // Si la personne est déjà dans le groupe on ne le rajoute pas
+    if (groupMap.find(person->getID()) != groupMap.end()){
+        cout << "Person with id " << person->getID() << " is already in the group" << endl;
+        return;
     }
-    // insert new node to the end of linked list
-    else
-    {
-      last->next = newNode;
-      newNode->prev = last;
-      last = newNode;
+
+    // Sinon on crée un nouveau maillon
+    Node *newNode = new Node;
+    newNode->p = *person;
+    newNode->next = nullptr;
+    newNode->prev = nullptr;
+
+    // La personne est leader + dernier si la liste est vide
+    if (leader == nullptr){
+        leader = newNode;
+        last = newNode;
+    // Sinon, la personne est insérée à la fin de la liste
+    }else{
+        last->next = newNode;
+        newNode->prev = last;
+        last = newNode;
     }
-  }
-  // then, add this person in map
-  groupMap.insert({person->getID(), newNode});
+    // Insertion de la personne dans la map
+    groupMap.insert({person->getID(), newNode});
+    size++;
 }
 
 void Group::removePerson(int id){
-  auto it = groupMap.find(id);
-  /* if id is found in map, remove it*/
-  if (it != groupMap.end())
-  {
-    Node *nodeToRemove = it->second;
-    if (nodeToRemove == leader)
-    {
-      leader = leader->next;
+
+    auto it = groupMap.find(id);
+
+    // id trouvé dans la map
+    if (it != groupMap.end()){
+        Node *nodeToRemove = it->second;
+
+        if (nodeToRemove == leader){
+            leader = leader->next;
+            leader->prev = nullptr;
+        }
+
+        if (nodeToRemove == last){
+            last = last->prev;
+            last->next = nullptr;
+        }
+
+        if (nodeToRemove->prev != nullptr){
+            nodeToRemove->prev->next = nodeToRemove->next;
+        }
+
+        if (nodeToRemove->next != nullptr){
+            nodeToRemove->next->prev = nodeToRemove->prev;
+        }
+
+        delete nodeToRemove;
+        groupMap.erase(it);
+        size--;
+    }else{
+        cout << "Person with id " << id << " not found" << endl;
     }
-    if (nodeToRemove == last)
-    {
-      last = last->prev;
-    }
-    if (nodeToRemove->prev != nullptr)
-    {
-      nodeToRemove->prev->next = nodeToRemove->next;
-    }
-    if (nodeToRemove->next != nullptr)
-    {
-      nodeToRemove->next->prev = nodeToRemove->prev;
-    }
-    delete nodeToRemove;
-    groupMap.erase(it);
-  }
-  else
-  {
-    std::cout << "Person with id " << id << " not found" << std::endl;
-  }
 }
 
 void Group::removeLeader(){
-  for (const auto &rm : groupMap)
-  {
-    if (!groupMap.empty())
-    {
-      std::cout << " This group is empty " << std::endl;
+
+    if (groupMap.empty()){
+        cout << " This group is empty " << endl;
+        return;
     }
-    else
-    {
-      if (leader != nullptr)
-      {
-        Node *oldLeader = leader;
-        leader = leader->next;
-        if (leader != nullptr)
-        {
-          leader->prev = nullptr;
-        }
-        else
-        {
-          last = nullptr;
-        }
-        delete oldLeader;
-        std::cout << "Leader removed from the group" << std::endl;
-      }
-      groupMap.erase(groupMap.begin());
+
+    Node *oldLeader = leader;
+    leader = leader->next;
+
+    if (leader != nullptr){
+        leader->prev = nullptr;
+    }else{
+        last = nullptr;
     }
-  }
+
+    delete oldLeader;
+    cout << "Leader removed from the group" << endl;
+
+    groupMap.erase(groupMap.begin());
+    size--;
 }
 
-/* Group::Iterator Group::begin() const {
-  return Iterator(leader);
-} */
+//FIX
+Group::GroupIterator Group::begin() const {
+    return GroupIterator(leader);
+}
 
-
-Group::Iterator Group::end() const {
-  return Iterator(nullptr);
+Group::GroupIterator Group::end() const {
+    return GroupIterator(nullptr);
 }
 
 
