@@ -16,7 +16,7 @@ struct Node {
     Person p;
     Node* next;
     Node* prev; 
-    Node() : p(p.getName(), p.getID()), next(nullptr), prev(nullptr) {}
+    Node() : p("nullstr", -1), next(nullptr), prev(nullptr) {}
 };
 
 class Group {

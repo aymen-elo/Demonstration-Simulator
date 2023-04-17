@@ -53,7 +53,7 @@ void Group::insertPerson(Person *person){
     }
 
     // Sinon on crée un nouveau maillon
-    Node *newNode = new Node;
+    Node *newNode = new Node();
     newNode->p = *person;
     newNode->next = nullptr;
     newNode->prev = nullptr;
@@ -70,7 +70,7 @@ void Group::insertPerson(Person *person){
     }
     // Insertion de la personne dans la map
     groupMap.insert({person->getID(), newNode});
-    size++;
+    size++;   
 }
 
 void Group::removePerson(int id){
