@@ -67,8 +67,34 @@ void Procession::removePerson(int id){
         }
     }
 }
-void Procession::sortColor(){}
-void Procession::sortSize(){}
+void Procession::sortColor(){
+    quickSortColor(group.begin(), group.end()); 
+}
+void Procession::quickSortColor(std::list<Group*>::iterator begin, std::list<Group*>::iterator end){
+    
+    if (std::distance(begin,end) < 2){
+      return;
+    }
+    else{
+          std::list<Group*>::iterator pivot = std::next(begin, std::distance(begin,end)/2);
+          std::list<Group*>::iterator middle = std::partion(begin, end, [pivot](const Group* group){
+            return (group->getColor() < (*pivot)->getColor())
+          });
+          // Recusrive de trier le groupe par couleur//
+          quickSortColor(begin, middle); 
+          quickSortColor(middle,end); 
+    }
+}
+void Procession::sortSize(){
+    for ( auto it1 = group.begin(); it1 != group.end(); it1++){
+        for (auto it2 = it1; it2 != group.begin(); it2--){
+            if( (*it2)->getSize() > (*(std:prev(it2))->getSize()){
+                std:swap(it2,std:prev(it2) );
+            })
+
+        }
+    }
+}
 Procession::~Procession() {
     for (auto it = groups.begin(); it != groups.end(); ++it) {
         delete *it;

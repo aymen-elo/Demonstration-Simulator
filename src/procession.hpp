@@ -29,6 +29,7 @@ class Procession {
         void removePerson(int id);
 
         void sortColor();
+        void quickSortColor(std::list<Group*>::iterator begin, std::list<Group*>::iterator end); 
         void sortSize();
 
         class ProcessIterator {
