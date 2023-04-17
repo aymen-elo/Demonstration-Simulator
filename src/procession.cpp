@@ -34,6 +34,11 @@ void Procession::removeGroup(const std::string &name){
         }
     }
 }
+
+string Procession::getName() const{
+    return this->name;
+}
+
 Person Procession::getPerson(int id) const{
 
     for(Group* g : groups) {
@@ -44,6 +49,10 @@ Person Procession::getPerson(int id) const{
         }
     }
     return Person("INEXISTANT", -1);
+}
+
+list<Group*> Procession::getGroups() const{
+    return this->groups;
 }
 
 void Procession::removePerson(int id){
