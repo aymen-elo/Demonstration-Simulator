@@ -130,15 +130,6 @@ void Group::removeLeader(){
     size--;
 }
 
-//FIX
-Group::GroupIterator Group::begin() const {
-    return GroupIterator(leader);
-}
-
-Group::GroupIterator Group::end() const {
-    return GroupIterator(nullptr);
-}
-
 
 Group::~Group() {
   Node* current = leader;

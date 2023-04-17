@@ -9,7 +9,6 @@
 
 /*
 Procession = Cortège, son nom est le sujet de la manifestation
-Les opérations de Procession sont de complexité constante Θ(1)
 */
 
 class Procession {

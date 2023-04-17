@@ -46,21 +46,37 @@ class Group {
         void removePerson(int id);
         void removeLeader();
 
-
+        //Voir si ajouter d'autres operateurs
         class GroupIterator {
             private:
-                Person* current;
+                Node* current;
 
             public:
-                GroupIterator(Node *node);
-                Person* operator*() const;
-                GroupIterator& operator++();
-                bool operator==(const GroupIterator& other) const;
-                bool operator!=(const GroupIterator& other) const;
+                GroupIterator(Node *node) : current(node) {}
+
+                Node& operator*() const {
+                    return *current;
+                }
+
+                GroupIterator& operator++() {
+                    current++;
+                    return *this;
+                }
+
+                bool operator==(const GroupIterator& other) const {
+                    return this->current == other.current;
+                }
+                bool operator!=(const GroupIterator& other) const {
+                    return this->current != other.current;
+                }
         };
 
-        GroupIterator begin() const;
-        GroupIterator end() const; 
+        GroupIterator begin() const {
+            return GroupIterator(leader);
+        }
+        GroupIterator end() const {
+            return GroupIterator(last);
+        }
 }; 
 
 
