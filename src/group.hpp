@@ -6,33 +6,31 @@
 
 #include "person.hpp"
 
-
-/*
-Group = Groupe s'agit de plusieurs personnes rangées dans leur ordre d’arrivée, le plus ancien est le leader.
-Les opérations de Group sont de complexité constante Θ(1)
-*/
-
-struct Node {
-    Person p;
-    Node* next;
-    Node* prev; 
-    Node() : p(p.getName(), p.getID()), next(nullptr), prev(nullptr) {}
-};
+/////////////////////////////////////////////////////////////////////////////////
+// We are interested in the access to a person from the identifier in the group//
+// The time complexity must be a Θ(1). So I use Hashtable here                 //
+//because Group is a collection of people ordered from oldest (first) to newest (last)
+// So I decided 
 
 class Group {
     private:
-        
+     
+     struct Node {
+        Person p;
+        Node* next;
+        Node* prev; 
+        Node() : p(p.getName(), p.getID()), next(nullptr), prev(nullptr) {}
+    };
         std::string name;
         std::string color;
-        int size;
         Node* leader;
         Node* last;
-
+      
         //std::list<Person> peopleQ;
         std::unordered_map<int, Node* > groupMap;
 
     public:
-        Group(std::string name, std::string color, int size);
+        Group(std::string name, std::string color);
         ~Group();
 
         int getSize() const;
@@ -40,27 +38,26 @@ class Group {
         std::string getColor() const;
         Person getPerson(int id) const;
         Person getLeader() const;
-        std::unordered_map<int, Node* > getGroupMap();
 
         void insertPerson(Person* person);
         void removePerson(int id);
         void removeLeader();
 
 
-        class GroupIterator {
-            private:
-                Person* current;
+        class Iterator {
+      private:
+        Node *current;
 
-            public:
-                GroupIterator(Person* person);
-                Person* operator*() const;
-                GroupIterator& operator++();
-                bool operator==(const GroupIterator& other) const;
-                bool operator!=(const GroupIterator& other) const;
-        };
+      public:
+        Iterator(Node *node);
+        Person &operator*() const;
+        Iterator &operator++();
+        bool operator==(const Iterator &other) const;
+        bool operator!=(const Iterator &other) const;
+    };
 
-        GroupIterator begin() const;
-        GroupIterator end() const; 
+    Iterator begin() const;
+    Iterator end() const;
 }; 
 
 
