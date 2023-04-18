@@ -12,11 +12,15 @@ Group = Groupe s'agit de plusieurs personnes rangées dans leur ordre d’arriv�
 Les opérations de Group sont de complexité constante Θ(1)
 */
 
+
+/* Node est un maillon composé de trois pointeurs, le premier vers une Person
+** Les autres pointeurs, vers le suivant et le précedent de cette Person 
+*/
 struct Node {
-    Person p;
+    Person *p;
     Node* next;
     Node* prev; 
-    Node() : p("nullstr", -1), next(nullptr), prev(nullptr) {}
+    Node() : p(), next(nullptr), prev(nullptr) {}
 };
 
 class Group {
@@ -28,7 +32,6 @@ class Group {
         Node* leader;
         Node* last;
 
-        //std::list<Person> peopleQ;
         std::unordered_map<int, Node* > groupMap;
 
     public:

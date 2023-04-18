@@ -27,17 +27,20 @@ Person Group::getPerson(int id) const{
     auto it = this->groupMap.find(id);
 
     if (it != groupMap.end()){
-        cout << "Found person " << it->second->p.getName() << endl;
-        return it->second->p;
+        //Affichage pour aider
+        cout << "Found person " << it->second->p->getName() << endl;
+        return *(it->second->p);
     }else{
         return Person("INEXISTANT", -1);
     }
 }
 
 Person Group::getLeader() const{
-    auto it = groupMap.begin();
-    cout << "Leader of group is " << endl;
-    return it->second->p;
+    if(this->leader != nullptr){
+        return *(this->leader->p);
+    }else{
+        return Person("INEXISTANT", -1);    
+    }
 }
 
 std::unordered_map<int, Node* > Group::getGroupMap(){
@@ -54,7 +57,7 @@ void Group::insertPerson(Person *person){
 
     // Sinon on crée un nouveau maillon
     Node *newNode = new Node();
-    newNode->p = *person;
+    newNode->p = person;
     newNode->next = nullptr;
     newNode->prev = nullptr;
 
@@ -77,11 +80,14 @@ void Group::removePerson(int id){
 
     auto it = groupMap.find(id);
 
-    // id trouvé dans la map
+    // Maillon trouvé dans la map
     if (it != groupMap.end()){
         Node *nodeToRemove = it->second;
 
-        if (nodeToRemove == leader){
+        //Si on retire le leader
+        if (nodeToRemove->prev == nullptr){
+
+            //removeLeader ?
             leader = leader->next;
             leader->prev = nullptr;
         }
@@ -109,25 +115,30 @@ void Group::removePerson(int id){
 
 void Group::removeLeader(){
 
+    //0 personne dans le groupe
     if (groupMap.empty()){
         cout << " This group is empty " << endl;
         return;
     }
 
-    Node *oldLeader = leader;
+    groupMap.erase(groupMap.find(getLeader().getID()));
+
     leader = leader->next;
 
+    //Dans le cas ou il y a + qu'une personne
     if (leader != nullptr){
+        delete leader->prev->p;
+
+        delete leader->prev;
         leader->prev = nullptr;
+        size--;
     }else{
+        delete last->p;
+
+        delete last;
         last = nullptr;
     }
-
-    delete oldLeader;
     cout << "Leader removed from the group" << endl;
-
-    groupMap.erase(groupMap.begin());
-    size--;
 }
 
 
