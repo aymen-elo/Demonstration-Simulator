@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-Procession::Procession(const std::string &name){
+Procession::Procession(const string &name){
     this->name = name; 
 }
 
@@ -13,7 +13,7 @@ void Procession::addGroup(Group *group){
     if (groups.empty() || group->getName() < groups.front()->getName()) {
         groups.push_front(group); 
     }else{
-        std::list<Group*>::iterator it;
+        list<Group*>::iterator it;
         for (it = groups.begin(); it != groups.end(); it++) {
             if ((*it)->getName() > group->getName()) {
                 groups.insert(it, group);
@@ -27,7 +27,7 @@ void Procession::addGroup(Group *group){
 }
 
 
-void Procession::removeGroup(const std::string &name){
+void Procession::removeGroup(const string &name){
     for (const auto &rm : groups){
         if (rm->getName() == name){
             
@@ -68,33 +68,34 @@ void Procession::removePerson(int id){
     }
 }
 void Procession::sortColor(){
-    quickSortColor(group.begin(), group.end()); 
+    quickSortColor(groups.begin(), groups.end()); 
 }
-void Procession::quickSortColor(std::list<Group*>::iterator begin, std::list<Group*>::iterator end){
+void Procession::quickSortColor(list<Group*>::iterator begin, list<Group*>::iterator end){
     
-    if (std::distance(begin,end) < 2){
+    if (distance(begin,end) < 2){
       return;
     }
     else{
-          std::list<Group*>::iterator pivot = std::next(begin, std::distance(begin,end)/2);
-          std::list<Group*>::iterator middle = std::partion(begin, end, [pivot](const Group* group){
-            return (group->getColor() < (*pivot)->getColor())
+          list<Group*>::iterator pivot = next(begin, distance(begin,end)/2);
+          list<Group*>::iterator middle = partition(begin, end, [pivot](const Group* group){
+            return (group->getColor() < (*pivot)->getColor());
           });
           // Recusrive de trier le groupe par couleur//
           quickSortColor(begin, middle); 
           quickSortColor(middle,end); 
     }
 }
-void Procession::sortSize(){
-    for ( auto it1 = group.begin(); it1 != group.end(); it1++){
-        for (auto it2 = it1; it2 != group.begin(); it2--){
-            if( (*it2)->getSize() > (*(std:prev(it2))->getSize()){
-                std:swap(it2,std:prev(it2) );
-            })
 
-        }
-    }
-}
+///////////////////////////////////////Mis en commentaire pour compilation
+// void Procession::sortSize(){
+//     for ( auto it1 = groups.begin(); it1 != groups.end(); it1++){
+//         for (auto it2 = it1; it2 != groups.begin(); it2--){
+//             if( (*it2)->getSize() > (*(prev(it2))->getSize()){
+//                 std:swap(it2,std:prev(it2) );
+//             })
+//         }
+//     }
+// }
 Procession::~Procession() {
     for (auto it = groups.begin(); it != groups.end(); ++it) {
         delete *it;
