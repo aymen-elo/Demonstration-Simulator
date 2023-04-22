@@ -82,31 +82,39 @@ void Group::removePerson(int id){
 
     // Maillon trouvé dans la map
     if (it != groupMap.end()){
+
         Node *nodeToRemove = it->second;
 
-        //Si on retire le leader
+        //Si on fait un retrait de la 1e personne donc le leader
+        // removeLeader() s'occupe des destructions et maj de taille
         if (nodeToRemove->prev == nullptr){
-
-            //removeLeader ?
-            leader = leader->next;
-            leader->prev = nullptr;
+            this->removeLeader();
+            return;
         }
 
-        if (nodeToRemove == last){
+        //Retrait de la map en premier lieu
+        //Pas de retrait avant car removeLeader() le fait déjà
+        groupMap.erase(it);
+
+        //On arrive ici dans le cas où la personne B à retirer
+        //est au milieu, entre deux autres personnes A<->B<->C
+        if (nodeToRemove->next != nullptr && nodeToRemove->prev != nullptr){
+
+            nodeToRemove->prev->next = nodeToRemove->next;//A.suivant = C
+            nodeToRemove->next->prev = nodeToRemove->prev;//C.precedent = A
+        
+        //Sinon on est dans le cas du retrait du dernier
+        }else{
             last = last->prev;
             last->next = nullptr;
         }
 
-        if (nodeToRemove->prev != nullptr){
-            nodeToRemove->prev->next = nodeToRemove->next;
-        }
-
-        if (nodeToRemove->next != nullptr){
-            nodeToRemove->next->prev = nodeToRemove->prev;
-        }
-
+        //Destruction des objets
+        delete nodeToRemove->p;
         delete nodeToRemove;
-        groupMap.erase(it);
+
+        nodeToRemove = nullptr;
+
         size--;
     }else{
         cout << "Person with id " << id << " not found" << endl;
@@ -131,13 +139,13 @@ void Group::removeLeader(){
 
         delete leader->prev;
         leader->prev = nullptr;
-        size--;
     }else{
         delete last->p;
 
         delete last;
         last = nullptr;
     }
+    size--;
     cout << "Leader removed from the group" << endl;
 }
 
