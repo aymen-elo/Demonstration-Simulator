@@ -1,5 +1,6 @@
 #include "group.hpp"
 
+#include <stdexcept>
 #include <iostream>
 using namespace std;
 
@@ -30,17 +31,17 @@ Person Group::getPerson(int id) const{
         //Affichage pour aider
         cout << "Found person " << it->second->p->getName() << endl;
         return *(it->second->p);
-    }else{
-        return Person("INEXISTANT", -1);
     }
+
+    throw invalid_argument("Non existent id");
 }
 
 Person Group::getLeader() const{
     if(this->leader != nullptr){
         return *(this->leader->p);
-    }else{
-        return Person("INEXISTANT", -1);    
     }
+
+    throw logic_error("Empty group");
 }
 
 std::unordered_map<int, Node* > Group::getGroupMap(){
