@@ -3,27 +3,52 @@
 #include <iostream>
 using namespace std;
 
+/*
+* Procession <=> Cortège s'agit de plusieurs Groups, regroupés autour d'un meme sujet
+*/
+
 Procession::Procession(const string &name){
     this->name = name; 
 }
 
+string Procession::getName() const{
+    return this->name;
+}
 
-void Procession::addGroup(Group *group){
+list<Group*> Procession::getGroups() const{
+    return this->groups;
+}
 
-    if (groups.empty() || group->getName() < groups.front()->getName()) {
-        groups.push_front(group); 
-    }else{
-        list<Group*>::iterator it;
-        for (it = groups.begin(); it != groups.end(); it++) {
-            if ((*it)->getName() > group->getName()) {
-                groups.insert(it, group);
-                break;
+
+//La fonction recherche la personne dans tout les groupes du cortège
+//L'exception est levée pour chaque groupe dans lequel la personne
+//n'est pas présente. Mais On vérifie qu'on a bien parcouru tout les
+//groupes du cortège avant de lancer une exception 'finale'
+Person Procession::getPerson(int id) const{
+    int count = 0;
+
+    //Parcours des groupes du cortège
+    for(Group *g : groups) {
+        count++;
+
+        try{
+            Person p = g->getPerson(id);//recherche de la personne dans le groupe actuel
+            return p;
+        //L'exception est levée quand on ne trouve 
+        //pas la personne dans le groupe actuel
+        }catch(invalid_argument e) {
+
+            //Si on a parcouru tout les groupes du cortège
+            if(count >= groups.size()) {
+                throw invalid_argument("Personne non présente dans le cortège");
             }
         }
-        if (it == groups.end()) {
-            groups.push_back(group);
-        }
     }
+}
+
+
+void Procession::addGroup(Group *group){
+    groups.push_back(group);
 }
 
 
@@ -35,26 +60,6 @@ void Procession::removeGroup(const string &name){
     }
 }
 
-string Procession::getName() const{
-    return this->name;
-}
-
-Person Procession::getPerson(int id) const{
-
-    for(Group* g : groups) {
-        Person p = g->getPerson(id);
-
-        if(p.getID() != -1){
-            return p;
-        }
-    }
-    
-    throw invalid_argument("Non existent id");
-}
-
-list<Group*> Procession::getGroups() const{
-    return this->groups;
-}
 
 void Procession::removePerson(int id){
 
