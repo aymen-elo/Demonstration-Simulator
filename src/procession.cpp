@@ -48,7 +48,8 @@ Person Procession::getPerson(int id) const{
             return p;
         }
     }
-    return Person("INEXISTANT", -1);
+    
+    throw invalid_argument("Non existent id");
 }
 
 list<Group*> Procession::getGroups() const{
