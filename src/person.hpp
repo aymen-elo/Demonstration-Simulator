@@ -8,10 +8,11 @@ class Person {
     private:
         std::string name;
         int id;
+        static int nextID;
         std::pair<int, int> position;
 
     public:
-        Person(const std::string & name, int id);
+        Person(const std::string & name);
         ~Person();
 
         std::string getName() const;

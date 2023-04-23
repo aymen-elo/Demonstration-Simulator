@@ -3,7 +3,9 @@
 
 using namespace std;
 
-Person::Person(const string & name, int id) : name(name), id(id), position({-1,-1}) {}
+//Partie permettant de construire une perssone avec un attribution d'id automatique
+int Person::nextID = 0;
+Person::Person(const string & name) : name(name), id(nextID), position({-1,-1}) {nextID++;}
 
 Person::~Person() {}
 
