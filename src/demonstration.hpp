@@ -1,6 +1,7 @@
 #ifndef DEMONSTRATION_HPP
 #define DEMONSTRATION_HPP
 #include <vector>
+#include <iostream>
 #include "procession.hpp"
 
 /*
@@ -11,11 +12,11 @@ class Demonstration {
     private:
         int width;
         int length;
-        std::vector<Procession *> processions;
+        Procession *procession;
         std::vector<std::vector<Person *>> grid;
 
     public:
-        Demonstration(int wid, int len);
+        Demonstration(int wid, int len, Procession *proc);
         ~Demonstration();
 
         // SDA : Simulation d'une étape
@@ -33,6 +34,7 @@ class Demonstration {
         // SDA : Accès à l'ensemble des leaders en train de défiler
         std::vector<Person *> getLeaders() const;
 
+        void displayGrid();
 
 };
 
