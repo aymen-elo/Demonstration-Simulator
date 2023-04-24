@@ -41,7 +41,7 @@ Person Group::getLeader() const{
         return *(this->leader->p);
     }
 
-    throw logic_error("Empty group");
+    throw invalid_argument("Empty group");
 }
 
 std::unordered_map<int, Node* > Group::getGroupMap(){
@@ -152,11 +152,14 @@ void Group::removeLeader(){
 
 
 Group::~Group() {
-  Node* current = leader;
-    while (current != nullptr) {
-        Node* next = current->next;
-        delete current;
-        current = next;
+    
+    Node* current = leader;
+
+    //A la destruction d'un objet Group, on parcours en faisant des removeLeader()
+    //removeLeader s'occupe de la suppression et du changement de leader ainsi
+    //que la destruction de l'objet Person leader lui meme
+    while(current != nullptr) {
+        removeLeader();
+        current = leader;
     }
-    groupMap.clear();
 }
