@@ -52,10 +52,15 @@ void Procession::addGroup(Group *group){
 }
 
 
-void Procession::removeGroup(const string &name){
-    for (const auto &rm : groups){
-        if (rm->getName() == name){
-            
+
+void Procession::removeGroup(const string &name)
+{
+    for (auto it = groups.begin(); it != groups.end(); ++it)
+    {
+        if ((*it)->getName() == name)
+        {
+            groups.erase(it);
+            break;
         }
     }
 }
@@ -97,7 +102,7 @@ void Procession::quickSortColor(list<Group*>::iterator begin, list<Group*>::iter
 //     for ( auto it1 = groups.begin(); it1 != groups.end(); it1++){
 //         for (auto it2 = it1; it2 != groups.begin(); it2--){
 //             if( (*it2)->getSize() > (*(prev(it2))->getSize()){
-//                 std:swap(it2,std:prev(it2) );
+//                 std::swap(*it2, *(std::prev(it2)));
 //             })
 //         }
 //     }
@@ -107,3 +112,29 @@ Procession::~Procession() {
         delete *it;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
