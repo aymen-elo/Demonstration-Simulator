@@ -25,7 +25,7 @@ list<Group*> Procession::getGroups() const{
 //n'est pas présente. Mais On vérifie qu'on a bien parcouru tout les
 //groupes du cortège avant de lancer une exception 'finale'
 Person Procession::getPerson(int id) const{
-    int count = 0;
+    uint64_t count = 0;
 
     //Parcours des groupes du cortège
     for(Group *g : groups) {
@@ -53,16 +53,25 @@ void Procession::addGroup(Group *group){
 
 
 
-void Procession::removeGroup(const string &name)
-{
-    for (auto it = groups.begin(); it != groups.end(); ++it)
-    {
-        if ((*it)->getName() == name)
-        {
+void Procession::removeGroup(const string &name) {
+    
+    if(groups.size() == 0){
+        throw logic_error("Cortège vide");
+    }
+
+    //Recherche du groupe dans le cortege par nom
+    for (auto it = groups.begin(); it != groups.end(); ++it) {
+        
+        if ((*it)->getName() == name) {
+
+            //Destruction puis retrait du groupe
+            delete *it;
             groups.erase(it);
-            break;
+            return;
         }
     }
+
+    throw logic_error("Groupe non présent dans le cortège");
 }
 
 
@@ -112,29 +121,3 @@ Procession::~Procession() {
         delete *it;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
