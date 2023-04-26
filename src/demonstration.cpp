@@ -114,10 +114,10 @@ vector<Person*> Demonstration::getLeaders() const {
 
 void Demonstration::displayGrid() {
     
-    for(int j = length; j > 0; j--) {
-        cout<<j<<" ";
+    for(int i = length-1; i >= 0; i--) {
+        cout<<i+1<<" ";
 
-        for(int i = 0; i < width; i++) {
+        for(int j = 0; j < width; j++) {
 
             Person *p = grid[i][j];
 
@@ -155,8 +155,8 @@ void Demonstration::displayGrid() {
     }
 
     cout<<"  ";
-    for(int i = 0; i < width; i++) {
-        cout<<i+1<<" ";
+    for(int j = 0; j < width; j++) {
+        cout<<j+1<<" ";
     }
     cout<<endl;
 }

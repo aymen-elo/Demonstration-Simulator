@@ -13,21 +13,19 @@ using namespace std;
 void displayGroupMembers(Group *g) {
     
     if(g->getSize() == 0) {
-        cout<<endl<<g->getName()<<" est vide"<<endl;
+        cout<<endl<<g->getName()<<" : vide"<<endl;
         return;
     }
 
-    cout<<endl;
     auto it = g->getGroupMap().find(g->getLeader().getID());
     Node *temp = it->second;
 
-    cout<<endl<<"Groupe : "<<g->getName()<<endl;
+    cout<<endl<<g->getName()<<" : ";
 
     while(temp != nullptr) {
-        cout<<temp->p->getName()<<" - ";
+        cout<<temp->p->getName().substr(0,1)<<"-";
         temp = temp->next;
     }
-    cout<<endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +101,12 @@ int main(){
     fcor.close();
 
     Demonstration *d = new Demonstration(3,3,pr);
+
+    for(Group* g : pr->getGroups()) {
+        displayGroupMembers(g);
+    }
+
+    cout<<endl<<endl;
 
     while(true) {
         d->simStage();
