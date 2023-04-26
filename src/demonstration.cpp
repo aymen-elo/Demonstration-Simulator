@@ -54,7 +54,7 @@ void Demonstration::simStage() {
     //Pour chaque ligne de la fin de la grille jusqu'a un seuil
     //le seuil correspond a la rangée ou les manifestants ont le
     //le plus avancé
-    for(int i = length - 1; i >= length - stageCount; i--) {
+    for(int i = 0; i < stageCount; i++) {
 
         for(int j = 0; j < width; j++) {
             
