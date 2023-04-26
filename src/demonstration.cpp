@@ -59,7 +59,7 @@ void Demonstration::simStage() {
         for(int j = 0; j < width; j++) {
             
             try {
-                grid[i][j] = &procession->getPerson(i);
+                grid[i][j] = &procession->getPerson(j);
             }catch(invalid_argument e) {
                 grid[i][j] = nullptr;
             }
