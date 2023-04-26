@@ -34,7 +34,7 @@ Demonstration::~Demonstration() {
 void Demonstration::updatePosition(int id) {
 
     //Une reference vers notre personne 
-    Person p = procession->getPerson(id);
+    Person &p = procession->getPerson(id);
 
     //Actualisation du membre position
     pair<int,int> updatedPosition = {p.getPosition().first+1, p.getPosition().second};
