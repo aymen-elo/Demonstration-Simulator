@@ -3,10 +3,27 @@
 
 using namespace std;
 
+
 //On suppose que le cortège est déjà construit
 Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), length(len), procession(proc) {
     // Initialiser la grille avec des pointeurs nuls
     grid = vector<vector<Person*>>(wid, vector<Person*>(len, nullptr));
+
+    //Calcul du nombre de personnes au total
+    int numPeople = 0;
+    for(Group *g : procession->getGroups()) {
+        numPeople += g->getSize();
+    }
+
+    //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
+    for(int i = 0; i < numPeople/2; i++) {
+
+        Person *p = &procession->getPerson(i);
+
+        //Calcul et affectation de la position sur y grace à l'ID et la largeur de la grille
+        pair<int,int> initialPosition = {p->getPosition().first, p->getID()%width};       
+        p->setPosition(initialPosition); 
+    }
 }
 
 Demonstration::~Demonstration() {
@@ -14,8 +31,45 @@ Demonstration::~Demonstration() {
     delete procession;
 }
 
-void Demonstration::simStage() {
+void Demonstration::updatePosition(int id) {
 
+    //Une reference vers notre personne 
+    Person p = procession->getPerson(id);
+
+    //Actualisation du membre position
+    pair<int,int> updatedPosition = {p.getPosition().first+1, p.getPosition().second};
+    p.setPosition(updatedPosition);
+
+}
+
+void Demonstration::simStage() {
+    //a mimir
+    Sleep(1000);
+
+    //Parcours des personnes concernées par le changement de position
+    for(int i = 0; i < width*stageCount; i++) {
+        updatePosition(i);
+    }
+
+    //Pour chaque ligne de la fin de la grille jusqu'a un seuil
+    //le seuil correspond a la rangée ou les manifestants ont le
+    //le plus avancé
+    for(int i = length - 1; i >= length - stageCount; i--) {
+
+        for(int j = 0; j < width; j++) {
+            
+            try {
+                grid[i][j] = &procession->getPerson(i);
+            }catch(invalid_argument e) {
+                grid[i][j] = nullptr;
+            }
+        }
+    }
+
+
+    displayGrid();
+
+    stageCount++;
 }
 
 
@@ -33,17 +87,7 @@ bool Demonstration::hasEnded() const {
 
 Person Demonstration::getPerson(int id) {
 
-    for (Group* group : procession->getGroups()) {
-        // On utilise la méthode getPerson de la classe Group pour récupérer la personne correspondant à l'ID
-        Person person = group->getPerson(id);
-        // Si l'ID de la personne correspond à celui cherché, on la retourne
-        if (person.getID() == id) {
-            return person;
-        }
-    }
-
-    // Si on n'a pas trouvé la personne, on lève une exception
-    throw invalid_argument("Personne non trouvée");
+    return procession->getPerson(id);
 }
 
 
@@ -74,10 +118,37 @@ void Demonstration::displayGrid() {
         cout<<j<<" ";
 
         for(int i = 0; i < width; i++) {
-        
-            cout<<"_ ";
-            
-            //TODO : le cas ou on a une personne à cette position
+
+            Person *p = grid[i][j];
+
+            if(p == nullptr) {
+                cout<<"_ ";
+            }else{
+                string color;
+                int id = p->getID();
+
+                //Parcours des groupes pour retrouver la couleur
+                for(Group *g : procession->getGroups()) {
+                    
+                    try{
+                        g->getPerson(id);
+
+                        //Au succès l'exception n'est pas levée et on casse la boucle
+                        //On retrouve donc la couleur a utiliser pour l'affichage
+                        color = g->getColor();
+                        break;
+
+                    //Exception levée si la personne n'est pas dans le groupe actuel
+                    }catch(invalid_argument e) {
+                        continue;
+                    }
+                }
+                
+                Couleur col = Couleur::creer(color);
+
+                col.afficher(cout, p->getName().substr(0,1));
+                cout<<" ";
+            }
 
         }
         cout<<endl;
@@ -87,6 +158,7 @@ void Demonstration::displayGrid() {
     for(int i = 0; i < width; i++) {
         cout<<i+1<<" ";
     }
+    cout<<endl;
 }
 
 

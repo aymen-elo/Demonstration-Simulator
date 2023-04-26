@@ -41,8 +41,8 @@ class Group {
         int getSize() const;
         std::string getName() const;
         std::string getColor() const;
-        Person getPerson(int id) const;
-        Person getLeader() const;
+        Person& getPerson(int id) const;
+        Person& getLeader() const;
         std::unordered_map<int, Node* > getGroupMap();
 
         void insertPerson(Person* person);

@@ -22,8 +22,9 @@ class Procession {
         ~Procession();
 
         std::string getName() const;
-        Person getPerson(int id) const;
+        Person& getPerson(int id) const;
         std::list<Group*> getGroups() const;
+        Group getGroup(std::string name) const;
 
         void addGroup(Group *group);
         void removeGroup(const std::string &name);

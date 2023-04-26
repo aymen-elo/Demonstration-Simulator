@@ -3,6 +3,9 @@
 #include <vector>
 #include <iostream>
 #include "procession.hpp"
+#include "couleur.hpp"
+#include <string>
+#include <windows.h>
 
 /*
 Demonstration = Manif est un Procession (Cortege) qui se déplace
@@ -14,6 +17,8 @@ class Demonstration {
         int length;
         Procession *procession;
         std::vector<std::vector<Person *>> grid;
+
+        uint64_t stageCount = 1;
 
     public:
         Demonstration(int wid, int len, Procession *proc);
@@ -35,6 +40,8 @@ class Demonstration {
         std::vector<Person *> getLeaders() const;
 
         void displayGrid();
+
+        void updatePosition(int id);
 
 };
 

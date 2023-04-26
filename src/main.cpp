@@ -5,13 +5,34 @@
 #include <set>
 #include <time.h>
 #include "demonstration.hpp"
+#include "couleur.hpp"
+
 
 using namespace std;
 
+void displayGroupMembers(Group *g) {
+    
+    if(g->getSize() == 0) {
+        cout<<endl<<g->getName()<<" est vide"<<endl;
+        return;
+    }
+
+    cout<<endl;
+    auto it = g->getGroupMap().find(g->getLeader().getID());
+    Node *temp = it->second;
+
+    cout<<endl<<"Groupe : "<<g->getName()<<endl;
+
+    while(temp != nullptr) {
+        cout<<temp->p->getName()<<" - ";
+        temp = temp->next;
+    }
+    cout<<endl;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // choix aléatoire d'un élément dans l'ensemble passé en paramètre
-std::string choisir_prenom(const set<std::string>& s)
-{
+std::string choisir_prenom(const set<std::string>& s){
    int n = s.size(),
        k = rand() % n;
 
@@ -22,14 +43,12 @@ std::string choisir_prenom(const set<std::string>& s)
 
 ////////////////////////////////////////////////////////////////////////////////
 // lecture du fichier des prénoms
-void lecture_fichier_prenoms(set<std::string>& ens)
-{
+void lecture_fichier_prenoms(set<std::string>& ens){
    ifstream fin;
    fin.open("nat2021.csv", ios::in);
    string line, mot;
 
-   while (fin >> line)
-   {
+   while (fin >> line){
       istringstream is(line);
       getline(is, mot, ';');
       getline(is, mot, ';');
@@ -39,41 +58,59 @@ void lecture_fichier_prenoms(set<std::string>& ens)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int main()
-{
-   // initialisation du générateur de nombres aléatoires
-   srand(time(0));
+int main(){
 
-   // lecture du fichier des prénoms
-   set<std::string> ens_prenom;
-   lecture_fichier_prenoms(ens_prenom);
+    // initialisation du générateur de nombres aléatoires
+    srand(time(0));
 
-   // lecture du fichier des corteges
-   ifstream fcor;
-   fcor.open("declaration.csv", ios::in);
-   std::string line, nom, couleur, str, sujet;
-   int taille;
-   
-   getline(fcor, sujet);
+    // lecture du fichier des prénoms
+    set<std::string> ens_prenom;
+    lecture_fichier_prenoms(ens_prenom);
 
-   // TODO : création d'un cortège
+    // lecture du fichier des corteges
+    ifstream fcor;
+    fcor.open("declaration.csv", ios::in);
+    std::string line, nom, couleur, str, sujet;
+    int taille;
+    
+    getline(fcor, sujet);
 
-   while (fcor >> line)
-   {
-      istringstream is(line);
-      getline(is, nom, ';');
-      getline(is, couleur, ';');
-      getline(is, str, ';');
-      taille = stoi(str);
+    // TODO : création d'un cortège
 
-      cout << nom << ';' << couleur << ';' << taille << endl;
+    /*Cortege créé*/
+    Procession *pr = new Procession(sujet); //Mu zik !
 
-      // TODO : création des groupes
-      // appeler choisir_prenom(ens_prenom) pour choisir un prénom
-   }
-   fcor.close();
+    //Iteration sur les groupes dans declaration.csv
+    while (fcor >> line){
+        istringstream is(line);
+        getline(is, nom, ';');
+        getline(is, couleur, ';');
+        getline(is, str, ';');
+        taille = stoi(str);
 
-   // TODO
 
-   return 0;
+
+        /*Ajout du groupe actuel au cortege*/
+        Group *g = new Group(nom, couleur, taille); //it 1 : Group(electro, vert, 8)
+        pr->addGroup(g);
+
+        /*Insertion de personne dans le groupe actuel dans le groupe*/
+        for(int i = 0; i < taille; i++) {
+            Person *p = new Person(choisir_prenom(ens_prenom));
+            g->insertPerson(p);
+        }
+    }
+    fcor.close();
+
+    Demonstration *d = new Demonstration(3,3,pr);
+
+    while(true) {
+        d->simStage();
+    }
+
+    cout<<endl<<"Fin";
+
+
+
+    return 0;
 }

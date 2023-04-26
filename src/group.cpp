@@ -24,19 +24,18 @@ string Group::getColor() const{
     return this->color;
 }
 
-Person Group::getPerson(int id) const{
+Person& Group::getPerson(int id) const{
     auto it = this->groupMap.find(id);
 
     if (it != groupMap.end()){
         //Affichage pour aider
-        cout << "Found person " << it->second->p->getName() << endl;
         return *(it->second->p);
     }
 
     throw invalid_argument("Non existent id");
 }
 
-Person Group::getLeader() const{
+Person& Group::getLeader() const{
     if(this->leader != nullptr){
         return *(this->leader->p);
     }

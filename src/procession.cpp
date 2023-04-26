@@ -24,7 +24,7 @@ list<Group*> Procession::getGroups() const{
 //L'exception est levée pour chaque groupe dans lequel la personne
 //n'est pas présente. Mais On vérifie qu'on a bien parcouru tout les
 //groupes du cortège avant de lancer une exception 'finale'
-Person Procession::getPerson(int id) const{
+Person& Procession::getPerson(int id) const{
     uint64_t count = 0;
 
     //Parcours des groupes du cortège
@@ -32,8 +32,8 @@ Person Procession::getPerson(int id) const{
         count++;
 
         try{
-            Person p = g->getPerson(id);//recherche de la personne dans le groupe actuel
-            return p;
+            return g->getPerson(id);//recherche de la personne dans le groupe actuel
+
         //L'exception est levée quand on ne trouve 
         //pas la personne dans le groupe actuel
         }catch(invalid_argument e) {
@@ -44,6 +44,21 @@ Person Procession::getPerson(int id) const{
             }
         }
     }
+}
+
+Group Procession::getGroup(string name) const {
+    
+    if(groups.size() == 0){
+        throw logic_error("Cortège vide");
+    }
+    
+    for(Group *g : groups) {
+        if(g->getName() == name) {
+            return *g;
+        }
+    }
+
+    throw invalid_argument("Groupe non présent dans le cortège");
 }
 
 
