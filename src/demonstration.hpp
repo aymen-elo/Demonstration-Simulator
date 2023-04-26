@@ -19,6 +19,7 @@ class Demonstration {
         std::vector<std::vector<Person *>> grid;
 
         uint64_t stageCount = 1;
+        uint64_t stageCountMax = 7;
 
     public:
         Demonstration(int wid, int len, Procession *proc);

@@ -44,7 +44,7 @@ void Demonstration::updatePosition(int id) {
 
 void Demonstration::simStage() {
     //a mimir
-    Sleep(1000);
+    Sleep(500);
     int numPeople = 0;
     for(Group *g : procession->getGroups()) {
         numPeople += g->getSize();
@@ -52,17 +52,48 @@ void Demonstration::simStage() {
 
     //Parcours des personnes concernées par le changement de position
     for(int i = 0; i < width*stageCount; i++) {
+        
+        if(i >= numPeople/2) {
+            break;
+        }
         updatePosition(i);
     }
+    bool sig = false;
 
     //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
     for(int i = 0; i < width*stageCount; i++) {
 
+        if(i >= numPeople/2) {
+            sig = true;
+            break;
+        }
+
+
+
         Person *p = &procession->getPerson(i);
 
-        grid[p->getPosition().first][p->getPosition().second] = p;
+        int x = p->getPosition().first;
+        int y = p->getPosition().second;
+
+        if(x < grid.size()) {
+            grid[x][y] = p;
+        }
     }
 
+    //remplacement par des cases vides (tofix)
+    if(sig) {
+
+        for(int i = (numPeople/2)%width; i < width; i++) {
+            grid[stageCount - stageCountMax][i] = nullptr;
+        }
+
+        for(int i = 0; i < width; i++) {
+            
+            for(int j = stageCount - stageCountMax - 1; j >= 0; j--) {
+                grid[j][i] = nullptr;
+            }
+        }
+    }
 
     displayGrid();
 
