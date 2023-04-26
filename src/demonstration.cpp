@@ -45,25 +45,22 @@ void Demonstration::updatePosition(int id) {
 void Demonstration::simStage() {
     //a mimir
     Sleep(1000);
+    int numPeople = 0;
+    for(Group *g : procession->getGroups()) {
+        numPeople += g->getSize();
+    }
 
     //Parcours des personnes concernées par le changement de position
     for(int i = 0; i < width*stageCount; i++) {
         updatePosition(i);
     }
 
-    //Pour chaque ligne de la fin de la grille jusqu'a un seuil
-    //le seuil correspond a la rangée ou les manifestants ont le
-    //le plus avancé
-    for(int i = 0; i < stageCount; i++) {
+    //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
+    for(int i = 0; i < width*stageCount; i++) {
 
-        for(int j = 0; j < width; j++) {
-            
-            try {
-                grid[i][j] = &procession->getPerson(j);
-            }catch(invalid_argument e) {
-                grid[i][j] = nullptr;
-            }
-        }
+        Person *p = &procession->getPerson(i);
+
+        grid[p->getPosition().first][p->getPosition().second] = p;
     }
 
 
@@ -71,6 +68,7 @@ void Demonstration::simStage() {
 
     stageCount++;
 }
+
 
 
 
