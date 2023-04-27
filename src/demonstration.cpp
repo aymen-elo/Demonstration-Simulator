@@ -1,7 +1,12 @@
 #include "demonstration.hpp"
 
-
+#include <windows.h> // A voir pour linux
+#include <iostream>
 using namespace std;
+
+/*
+    Demonstration = Manif
+*/
 
 
 //On suppose que le cortège est déjà construit

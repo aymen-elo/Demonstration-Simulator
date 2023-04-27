@@ -3,7 +3,13 @@
 
 using namespace std;
 
-//Partie permettant de construire une perssone avec un attribution d'id automatique
+/*
+    Person = Personne
+*/
+
+/* nextID permet d'affecter au préalable un identifiant unique a chaque personne
+** et a chaque construction d'un objet Person il est incrémenté
+*/
 int Person::nextID = 0;
 Person::Person(const string & name) : name(name), id(nextID), position({-1,-1}) {nextID++;}
 

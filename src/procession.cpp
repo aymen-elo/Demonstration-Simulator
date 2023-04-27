@@ -1,10 +1,11 @@
 #include "procession.hpp"
 
+#include <algorithm>
 #include <iostream>
 using namespace std;
 
 /*
-* Procession <=> Cortège s'agit de plusieurs Groups, regroupés autour d'un meme sujet
+    Procession <=> Cortège
 */
 
 /* 
@@ -16,6 +17,10 @@ Procession::Procession(const string &name){
     this->size = 0;
 }
 
+
+//******************************************************************************************
+
+
 /* La taille du cortège correspond au nombre total de personnes
 ** @return taille du cortège
 */
@@ -23,19 +28,11 @@ int Procession::getSize() const {
     return this->size;
 }
 
-
 /* Retourner le sujet qui rassemble les groupes
 ** @return le nom du cortège
 */
 string Procession::getName() const{
     return this->name;
-}
-
-/* Accèder à tout les groupes du cortège
-** @return liste chainée de pointeurs vers Groups
-*/
-list<Group*> Procession::getGroups() const{
-    return this->groups;
 }
 
 /* Rechercher la personne dans tous les groupes du cortège;
@@ -73,6 +70,13 @@ Person& Procession::getPerson(int id) const{
     throw invalid_argument("Personne non présente dans le cortège");
 }
 
+/* Accèder à tout les groupes du cortège
+** @return liste chainée de pointeurs vers Groups
+*/
+list<Group*> Procession::getGroups() const{
+    return this->groups;
+}
+
 /* Accèder à un groupe du cortège à partir de son nom
 ** @param nom du groupe
 ** @return copie du groupe
@@ -92,6 +96,10 @@ Group Procession::getGroup(string name) const {
     //On atteint cette ligne uniquement quand le groupe n'est pas trouvé
     throw invalid_argument("Groupe non présent dans le cortège");
 }
+
+
+//******************************************************************************************
+
 
 /* Ajouter un groupe au cortège
 ** @param group pointeur vers un objet groupe
@@ -145,6 +153,10 @@ void Procession::removePerson(int id){
     }
 }
 
+
+//******************************************************************************************
+
+
 /* Trier les groupes du cortège par ordre alphabétique des couleurs
 */
 void Procession::sortColor(){
@@ -181,6 +193,10 @@ void Procession::quickSortColor(list<Group*>::iterator begin, list<Group*>::iter
 //         }
 //     }
 // }
+
+
+//******************************************************************************************
+
 
 /* Détruire un objet cortège
 */

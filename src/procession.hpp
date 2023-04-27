@@ -1,15 +1,13 @@
-/*Procession <=> Cortege*/
+#include "group.hpp"
 
 #ifndef PROCESSION_HPP
 #define PROCESSION_HPP
 
-#include <vector>
 #include <list>
-#include <algorithm>
-#include "group.hpp"
 
 /*
 Procession = Cortège, son nom est le sujet de la manifestation
+Un cortège regroupe des groupes autour d'un unique sujet
 */
 
 class Procession {

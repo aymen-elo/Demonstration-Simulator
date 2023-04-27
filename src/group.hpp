@@ -1,10 +1,11 @@
-#include <string>
-#include <unordered_map>
-#include <list>
+#include "person.hpp"
+
 #ifndef GROUP_HPP
 #define GROUP_HPP
 
-#include "person.hpp"
+#include <string>
+#include <unordered_map>
+
 
 
 /*
@@ -41,9 +42,9 @@ class Group {
         int getSize() const;
         std::string getName() const;
         std::string getColor() const;
+        std::unordered_map<int, Node* > getGroupMap() const;
         Person& getPerson(int id) const;
         Person& getLeader() const;
-        std::unordered_map<int, Node* > getGroupMap();
 
         void insertPerson(Person* person);
         void removePerson(int id);

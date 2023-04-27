@@ -1,11 +1,11 @@
-#ifndef DEMONSTRATION_HPP
-#define DEMONSTRATION_HPP
-#include <vector>
-#include <iostream>
 #include "procession.hpp"
 #include "couleur.hpp"
+
+#ifndef DEMONSTRATION_HPP
+#define DEMONSTRATION_HPP
+
+#include <vector>
 #include <string>
-#include <windows.h>
 
 /*
 Demonstration = Manif est un Procession (Cortege) qui se déplace
