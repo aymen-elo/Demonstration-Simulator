@@ -7,7 +7,7 @@ using namespace std;
 //On suppose que le cortège est déjà construit
 Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), length(len), procession(proc) {
     // Initialiser la grille avec des pointeurs nuls
-    grid = vector<vector<Person*>>(wid, vector<Person*>(len, nullptr));
+    grid = vector<vector<Person*>>(len, vector<Person*>(wid, nullptr));
 
 
     //Calcul du nombre de personnes au total
@@ -16,7 +16,7 @@ Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), l
         numPeople += g->getSize();
     }
 
-    stageCountMax = (numPeople)/length + 1;
+    stageCountMax = (numPeople)/width + 1;
 
     //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
     for(int i = 0; i < numPeople; i++) {
@@ -47,7 +47,7 @@ void Demonstration::updatePosition(int id) {
 
 void Demonstration::simStage() {
     //a mimir
-    Sleep(500);
+    Sleep(100);
     int numPeople = 0;
     for(Group *g : procession->getGroups()) {
         numPeople += g->getSize();
@@ -56,6 +56,7 @@ void Demonstration::simStage() {
     //Parcours des personnes concernées par le changement de position
     for(int i = 0; i < width*stageCount; i++) {
         
+        //dans ce cas on a dépassé les cases ou il devrait y avoir de personnes
         if(i >= numPeople) {
             break;
         }
@@ -79,12 +80,13 @@ void Demonstration::simStage() {
         int x = p->getPosition().first;
         int y = p->getPosition().second;
 
+        //Condition pour ne pas remplir la grille hors de ses limites
+        //Les positions des personnes changent meme apres avoir quitté la grille
         if(x < grid.size()) {
             grid[x][y] = p;
         }
     }
 
-    //remplacement par des cases vides (tofix)
     if(sig) {
 
         if(grid.size() <= stageCount - stageCountMax) {
