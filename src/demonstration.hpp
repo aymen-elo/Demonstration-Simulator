@@ -18,13 +18,14 @@ class Demonstration {
         Procession *procession;
         std::vector<std::vector<Person *>> grid;
 
-        uint64_t stageCount = 1;
-        uint64_t stageCountMax = 7;
+        int stageCount = 1;
+        int stageCountMax;
+        bool sig = false;
 
     public:
         Demonstration(int wid, int len, Procession *proc);
         ~Demonstration();
-
+bool lastRowFlag = false;
         // SDA : Simulation d'une étape
         void simStage();
 

@@ -108,7 +108,7 @@ int main(){
 
     cout<<endl<<endl;
 
-    while(true) {
+    while(!d->lastRowFlag) {
         d->simStage();
     }
 

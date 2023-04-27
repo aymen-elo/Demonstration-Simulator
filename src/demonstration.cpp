@@ -9,11 +9,14 @@ Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), l
     // Initialiser la grille avec des pointeurs nuls
     grid = vector<vector<Person*>>(wid, vector<Person*>(len, nullptr));
 
+
     //Calcul du nombre de personnes au total
     int numPeople = 0;
     for(Group *g : procession->getGroups()) {
         numPeople += g->getSize();
     }
+
+    stageCountMax = (numPeople/2)/length + 1;
 
     //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
     for(int i = 0; i < numPeople/2; i++) {
@@ -58,7 +61,8 @@ void Demonstration::simStage() {
         }
         updatePosition(i);
     }
-    bool sig = false;
+
+    sig = false;
 
     //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
     for(int i = 0; i < width*stageCount; i++) {
@@ -83,10 +87,22 @@ void Demonstration::simStage() {
     //remplacement par des cases vides (tofix)
     if(sig) {
 
+        if(grid.size() <= stageCount - stageCountMax) {
+            for(int i = 0; i < width; i++) {
+                grid[length-1][i] = nullptr;
+                lastRowFlag = true;
+            }
+
+            displayGrid();
+            return;
+        }
+
+        //Pour chaque derniere rangée ou il y a des personnes 
         for(int i = (numPeople/2)%width; i < width; i++) {
             grid[stageCount - stageCountMax][i] = nullptr;
         }
 
+        //Pour le reste de la grille (cases vides)
         for(int i = 0; i < width; i++) {
             
             for(int j = stageCount - stageCountMax - 1; j >= 0; j--) {
