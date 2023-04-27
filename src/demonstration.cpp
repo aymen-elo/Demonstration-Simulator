@@ -62,6 +62,40 @@ Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), l
 //***************************************************************************************************************
 
 
+bool Demonstration::hasEnded() const {
+    return lastRowFlag;
+}
+
+Person Demonstration::getPerson(int id) {
+    return procession->getPerson(id);
+}
+
+void Demonstration::removePerson(int id) {
+    procession->removePerson(id);
+}
+
+vector<Person*> Demonstration::getLeaders() const {
+    vector<Person*> leaders;
+
+    // On parcourt chaque groupe
+    for (Group* g : procession->getGroups()) {
+        // On ajoute le leader de chaque groupe à la liste des leaders si le groupe n'est pas vide
+        try{
+            leaders.push_back(&g->getLeader());
+
+        //Si le groupe est vide on continue vers le suivant
+        }catch(invalid_argument e){
+            continue;
+        }
+    }
+
+    return leaders;
+}
+
+
+//***************************************************************************************************************
+
+
 /* Incrementer l' de la personne portant cet id
 ** @param id l'identifiant de la personne a faire avancer
 */
@@ -70,12 +104,10 @@ void Demonstration::updatePosition(int id) {
     //Une reference vers notre personne 
     Person &p = procession->getPerson(id);
 
-    //Actualisation du membre position
+    //Actualisation du la position de la personne actuelle
     pair<int,int> updatedPosition = {p.getPosition().first+1, p.getPosition().second};
     p.setPosition(updatedPosition);
-
 }
-
 
 /* Simuler une seule étape de la manifestation, donc un pas en avant
 */
@@ -91,7 +123,8 @@ void Demonstration::simStage() {
     //Ensuite c'est la première et la deuxième etc...
     for(int i = 0; i < width*stageCount; i++) {
 
-        //dans ce cas on a dépassé les cases ou il devrait y avoir de personnes
+        //Dans ce cas on a dépassé les cases 
+        //ou il devrait y avoir de personnes
         if(i >= numPeople) {
             sig = true;
             break;
@@ -143,68 +176,42 @@ void Demonstration::simStage() {
         }
     }
 
+    //Appel à l'affichage de grid
+    //grid étant mise à jour à cet instant
     displayGrid();
 
     stageCount++;
 }
 
-
-
-
-bool Demonstration::hasEnded() const {
-    return lastRowFlag;
-}
-
-
-Person Demonstration::getPerson(int id) {
-    return procession->getPerson(id);
-}
-
-
-
-void Demonstration::removePerson(int id) {
-    procession->removePerson(id);
-}
-
-
-
-vector<Person*> Demonstration::getLeaders() const {
-    vector<Person*> leaders;
-
-    // On parcourt chaque groupe
-    for (Group* g : procession->getGroups()) {
-        // On ajoute le leader de chaque groupe à la liste des leaders si le groupe n'est pas vide
-        try{
-            leaders.push_back(&g->getLeader());
-
-        //Si le groupe est vide on continue vers le suivant
-        }catch(invalid_argument e){
-            continue;
-        }
-    }
-
-    return leaders;
-}
-
-
+/* Afficher la grille sur laquelle se déplacent les personnes de la manifestation
+*/
 void Demonstration::displayGrid() {
-    
+
+
+    //Pour chaque rangée (ligne)
     for(int i = length-1; i >= 0; i--) {
+
+        //Numero de ligne à afficher
         cout<<i+1<<" ";
 
+        //pour chaque colonne de la grille
         for(int j = 0; j < width; j++) {
 
+            //Permet de définir si une personne est 
+            //présente a cette position de la grille
             Person *p = grid[i][j];
 
+            //S'il n'y a personne à cette case
             if(p == nullptr) {
                 cout<<"_ ";
             }else{
+
                 string color;
                 int id = p->getID();
 
-                //Parcours des groupes pour retrouver la couleur
+                //Parcours des groupes pour retrouver la couleur (a ameliorer parcours inutile)
                 for(Group *g : procession->getGroups()) {
-                    
+
                     try{
                         g->getPerson(id);
 
@@ -214,13 +221,16 @@ void Demonstration::displayGrid() {
                         break;
 
                     //Exception levée si la personne n'est pas dans le groupe actuel
+                    //On continue le parcours vu que la personne est forcément présente
                     }catch(invalid_argument e) {
                         continue;
                     }
                 }
-                
+
+                //Couleur trouvée et créée
                 Couleur col = Couleur::creer(color);
 
+                //Affichage de l'initial de la personne sur la grille
                 col.afficher(cout, p->getName().substr(0,1));
                 cout<<" ";
             }
@@ -229,6 +239,8 @@ void Demonstration::displayGrid() {
         cout<<endl;
     }
 
+    //Affichage de la dernière partie de la grille
+    //contenant les numéros de colonnes
     cout<<"  ";
     for(int j = 0; j < width; j++) {
         cout<<j+1<<" ";

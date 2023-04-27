@@ -28,20 +28,14 @@ class Demonstration {
         Demonstration(int wid, int len, Procession *proc);
         ~Demonstration();
 
-        void simStage();
         bool hasEnded() const;
-
-
         Person getPerson(int id);
-
         void removePerson(int id);
-
         std::vector<Person *> getLeaders() const;
 
-        void displayGrid();
-
         void updatePosition(int id);
-
+        void simStage();
+        void displayGrid();
 };
 
 #endif

@@ -191,13 +191,15 @@ void Procession::quickSortColor(list<Group*>::iterator begin, list<Group*>::iter
     }
 }
 
-///////////////////////////////////////Mis en commentaire pour compilation
 // void Procession::sortSize(){
-//     for ( auto it1 = groups.begin(); it1 != groups.end(); it1++){
-//         for (auto it2 = it1; it2 != groups.begin(); it2--){
-//             if( (*it2)->getSize() > (*(prev(it2))->getSize()){
-//                 std::swap(*it2, *(std::prev(it2)));
-//             })
+//     for (auto it1 = groups.begin(); it1 != groups.end(); it1++)
+//     {
+//         for (auto it2 = it1; it2 != groups.begin(); it2--)
+//         {
+//             if ((*it2)->getSize() > prev(*it2)->getSize())
+//             {
+//                 swap(it2, prev(it2));
+//             }
 //         }
 //     }
 // }
