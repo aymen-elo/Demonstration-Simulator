@@ -1,5 +1,6 @@
 #include "demonstration.hpp"
 
+//Pour la fonction sleep
 #ifdef __linux__
 #include <unistd.h>
 #endif
@@ -22,24 +23,27 @@ void mySleep(int sleepMs)
     usleep(sleepMS * 1000);   // usleep(microsec)
 #endif
 #ifdef _WIN32
-    
     Sleep(sleepMs);
 #endif
 }
 
-//On suppose que le cortège est déjà construit
+/* On suppose que le cortège est déjà construit
+** @param wid largeur de la grille
+** @param len longueur de la grille
+** @param proc cortège à faire defiler
+** @return un nouvel objet Demonstration
+*/
 Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), length(len), procession(proc) {
-    // Initialiser la grille avec des pointeurs nuls
+
+    //Initialiser la grille avec des pointeurs nuls
     grid = vector<vector<Person*>>(len, vector<Person*>(wid, nullptr));
 
+    //Affectation du nombre de personnes au total
+    numPeople = procession->getSize();
 
-    //Calcul du nombre de personnes au total
-    int numPeople = 0;
-    for(Group *g : procession->getGroups()) {
-        numPeople += g->getSize();
-    }
-
-    stageCountMax = (numPeople)/width + 1;
+    //Correspond au nombre de simStage à effectuer pour atteindre la dernière
+    //rangée contenant des personnes dans la grille
+    stageCountMax = (numPeople/width) + 1;
 
     //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
     for(int i = 0; i < numPeople; i++) {
@@ -47,16 +51,20 @@ Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), l
         Person *p = &procession->getPerson(i);
 
         //Calcul et affectation de la position sur y grace à l'ID et la largeur de la grille
+        //Le modulo sert alors a initialiser la meme position a deux personnes qui sont présentes
+        //sur la meme colonne de la grille
         pair<int,int> initialPosition = {p->getPosition().first, p->getID()%width};       
         p->setPosition(initialPosition); 
     }
 }
 
-Demonstration::~Demonstration() {
-    // Libérer la mémoire allouée pour les processions
-    delete procession;
-}
 
+//***************************************************************************************************************
+
+
+/* Incrementer l' de la personne portant cet id
+** @param id l'identifiant de la personne a faire avancer
+*/
 void Demonstration::updatePosition(int id) {
 
     //Une reference vers notre personne 
@@ -68,42 +76,36 @@ void Demonstration::updatePosition(int id) {
 
 }
 
+
+/* Simuler une seule étape de la manifestation, donc un pas en avant
+*/
 void Demonstration::simStage() {
     //a mimir
     mySleep(500);
-    int numPeople = 0;
-    for(Group *g : procession->getGroups()) {
-        numPeople += g->getSize();
-    }
 
-    //Parcours des personnes concernées par le changement de position
-    for(int i = 0; i < width*stageCount; i++) {
-        
-        //dans ce cas on a dépassé les cases ou il devrait y avoir de personnes
-        if(i >= numPeople) {
-            break;
-        }
-        updatePosition(i);
-    }
 
     sig = false;
 
-    //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
+    //Parcours des personnes concernées par le changement de position
+    //Au début uniquement la première rangée (en bas)
+    //Ensuite c'est la première et la deuxième etc...
     for(int i = 0; i < width*stageCount; i++) {
 
+        //dans ce cas on a dépassé les cases ou il devrait y avoir de personnes
         if(i >= numPeople) {
             sig = true;
             break;
         }
 
-
+        //La personne avance d'un pas
+        updatePosition(i);
 
         Person *p = &procession->getPerson(i);
 
         int x = p->getPosition().first;
         int y = p->getPosition().second;
 
-        //Condition pour ne pas remplir la grille hors de ses limites
+        //Condition pour ne pas remplir la grille hors de ses limites par le haut
         //Les positions des personnes changent meme apres avoir quitté la grille
         if(x < (int)grid.size()) {
             grid[x][y] = p;
@@ -112,7 +114,11 @@ void Demonstration::simStage() {
 
     if(sig) {
 
+        //Dans le cas ou il n'y a que la rangée la 
+        //plus en haut ou il y a des personnes présentes
         if(stageCount - stageCountMax >= (int)grid.size()) {
+
+            //On remplace alors toute la rangée par des pointeurs nuls
             for(int i = 0; i < width; i++) {
                 grid[length-1][i] = nullptr;
                 lastRowFlag = true;
@@ -122,12 +128,13 @@ void Demonstration::simStage() {
             return;
         }
 
-        //Pour chaque derniere rangée ou il y a des personnes 
+        //Boucler uniquement pour la rangée 
+        //contenant les dernières personnes du cortège
         for(int i = (numPeople)%width; i < width; i++) {
             grid[stageCount - stageCountMax][i] = nullptr;
         }
 
-        //Pour le reste de la grille (cases vides)
+        //Boucler pour le reste des rangées (donc à vider)
         for(int i = 0; i < width; i++) {
             
             for(int j = stageCount - stageCountMax - 1; j >= 0; j--) {
@@ -145,25 +152,17 @@ void Demonstration::simStage() {
 
 
 bool Demonstration::hasEnded() const {
-    // On parcourt chaque case de la dernière ligne de la grille
-    for (int i = 0; i < width; i++) {
-        if (grid[i][length - 1] != nullptr) {
-            return false; // Si une personne est encore présente, la manifestation n'a pas encore fini
-        }
-    }
-    return true; // Sinon, la manifestation est terminée
+    return lastRowFlag;
 }
 
 
 Person Demonstration::getPerson(int id) {
-
     return procession->getPerson(id);
 }
 
 
 
 void Demonstration::removePerson(int id) {
-    // On parcourt chaque procession de la manifestation
     procession->removePerson(id);
 }
 
@@ -175,7 +174,13 @@ vector<Person*> Demonstration::getLeaders() const {
     // On parcourt chaque groupe
     for (Group* g : procession->getGroups()) {
         // On ajoute le leader de chaque groupe à la liste des leaders si le groupe n'est pas vide
-        leaders.push_back(&g->getLeader());
+        try{
+            leaders.push_back(&g->getLeader());
+
+        //Si le groupe est vide on continue vers le suivant
+        }catch(invalid_argument e){
+            continue;
+        }
     }
 
     return leaders;
@@ -232,3 +237,6 @@ void Demonstration::displayGrid() {
 }
 
 
+Demonstration::~Demonstration() {
+    delete procession;
+}

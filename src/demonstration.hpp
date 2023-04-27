@@ -17,28 +17,25 @@ class Demonstration {
         int length;
         Procession *procession;
         std::vector<std::vector<Person *>> grid;
+        int numPeople;
 
         int stageCount = 1;
         int stageCountMax;
         bool sig = false;
+        bool lastRowFlag = false;
 
     public:
         Demonstration(int wid, int len, Procession *proc);
         ~Demonstration();
-bool lastRowFlag = false;
-        // SDA : Simulation d'une étape
-        void simStage();
 
-        // SDA : Test de fin
+        void simStage();
         bool hasEnded() const;
 
-        // SDA : Accès à une personne à partir de son identifiant
+
         Person getPerson(int id);
 
-        // SDA : Suppression d'une personne à partir de son identifiant
         void removePerson(int id);
 
-        // SDA : Accès à l'ensemble des leaders en train de défiler
         std::vector<Person *> getLeaders() const;
 
         void displayGrid();

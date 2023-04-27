@@ -22,10 +22,17 @@ Procession::Procession(const string &name){
 
 
 /* La taille du cortège correspond au nombre total de personnes
+** Le calcul est refait car on peut avoir l'addition de groupe vide
+** Donc l'attribut size reste a 0 alors qu'il y a des personnes dedans
 ** @return taille du cortège
 */
 int Procession::getSize() const {
-    return this->size;
+    int numPeople = 0;
+    for(Group *g : getGroups()) {
+        numPeople += g->getSize();
+    }
+
+    return numPeople;
 }
 
 /* Retourner le sujet qui rassemble les groupes
@@ -106,7 +113,7 @@ Group Procession::getGroup(string name) const {
 */
 void Procession::addGroup(Group *group){
     groups.push_back(group);
-    size++;
+    size += group->getSize();
 }
 
 
@@ -127,7 +134,7 @@ void Procession::removeGroup(const string &name) {
             //Destruction puis retrait du groupe
             delete *it;
             groups.erase(it);
-            size--;
+            size -= (*it)->getSize();
             return;
         }
     }
@@ -148,6 +155,7 @@ void Procession::removePerson(int id){
         if(p.getID() != -1){
             g->removePerson(id);
             cout<<"Person removed"<<endl;
+            size--;
             return;
         }
     }
