@@ -35,7 +35,7 @@ class Group {
         std::unordered_map<int, Node* > groupMap;
 
     public:
-        Group(std::string name, std::string color, int size);
+        Group(std::string name, std::string color);
         ~Group();
 
         int getSize() const;

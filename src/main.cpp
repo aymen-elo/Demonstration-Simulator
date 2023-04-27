@@ -89,7 +89,7 @@ int main(){
 
 
         /*Ajout du groupe actuel au cortege*/
-        Group *g = new Group(nom, couleur, taille); //it 1 : Group(electro, vert, 8)
+        Group *g = new Group(nom, couleur); //it 1 : Group(electro, vert, 8)
         pr->addGroup(g);
 
         /*Insertion de personne dans le groupe actuel dans le groupe*/

@@ -4,10 +4,10 @@
 #include <iostream>
 using namespace std;
 
-Group::Group(string name, string color, int size){
+Group::Group(string name, string color){
     this->name = name;
     this->color = color;
-    this->size = size;
+    this->size = 0;
     this->leader = nullptr;
     this->last = nullptr;
 }

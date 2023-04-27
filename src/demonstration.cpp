@@ -16,10 +16,10 @@ Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), l
         numPeople += g->getSize();
     }
 
-    stageCountMax = (numPeople/2)/length + 1;
+    stageCountMax = (numPeople)/length + 1;
 
     //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
-    for(int i = 0; i < numPeople/2; i++) {
+    for(int i = 0; i < numPeople; i++) {
 
         Person *p = &procession->getPerson(i);
 
@@ -56,7 +56,7 @@ void Demonstration::simStage() {
     //Parcours des personnes concernées par le changement de position
     for(int i = 0; i < width*stageCount; i++) {
         
-        if(i >= numPeople/2) {
+        if(i >= numPeople) {
             break;
         }
         updatePosition(i);
@@ -67,7 +67,7 @@ void Demonstration::simStage() {
     //Parcours de toutes les personnes a l'aide des ID (croissant 0, 1, 2...)
     for(int i = 0; i < width*stageCount; i++) {
 
-        if(i >= numPeople/2) {
+        if(i >= numPeople) {
             sig = true;
             break;
         }
@@ -98,7 +98,7 @@ void Demonstration::simStage() {
         }
 
         //Pour chaque derniere rangée ou il y a des personnes 
-        for(int i = (numPeople/2)%width; i < width; i++) {
+        for(int i = (numPeople)%width; i < width; i++) {
             grid[stageCount - stageCountMax][i] = nullptr;
         }
 
