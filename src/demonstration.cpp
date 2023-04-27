@@ -1,6 +1,12 @@
 #include "demonstration.hpp"
 
-#include <windows.h> // A voir pour linux
+#ifdef __linux__
+#include <unistd.h>
+#endif
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include <iostream>
 using namespace std;
 
@@ -8,6 +14,18 @@ using namespace std;
     Demonstration = Manif
 */
 
+//Fonction sleep pour windows et linux
+//@author shf301 on stackoverflow (modifiée pour ce programme)
+void mySleep(int sleepMs)
+{
+#ifdef __linux__
+    usleep(sleepMS * 1000);   // usleep(microsec)
+#endif
+#ifdef _WIN32
+    
+    Sleep(sleepMs);
+#endif
+}
 
 //On suppose que le cortège est déjà construit
 Demonstration::Demonstration(int wid, int len, Procession *proc) : width(wid), length(len), procession(proc) {
@@ -52,7 +70,7 @@ void Demonstration::updatePosition(int id) {
 
 void Demonstration::simStage() {
     //a mimir
-    Sleep(100);
+    mySleep(500);
     int numPeople = 0;
     for(Group *g : procession->getGroups()) {
         numPeople += g->getSize();
