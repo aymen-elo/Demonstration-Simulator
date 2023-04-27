@@ -100,7 +100,7 @@ int main(){
     }
     fcor.close();
 
-    Demonstration *d = new Demonstration(3,3,pr);
+    Demonstration *d = new Demonstration(5,5,pr);
 
     for(Group* g : pr->getGroups()) {
         displayGroupMembers(g);
@@ -108,7 +108,7 @@ int main(){
 
     cout<<endl<<endl;
 
-    while(!d->lastRowFlag) {
+    while(!d->hasEnded()) {
         d->simStage();
     }
 

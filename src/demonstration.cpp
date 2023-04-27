@@ -248,7 +248,7 @@ void Demonstration::displayGrid() {
     cout<<endl;
 }
 
-
+//***************************************************************************************************************
 Demonstration::~Demonstration() {
     delete procession;
 }
