@@ -82,14 +82,14 @@ void Demonstration::simStage() {
 
         //Condition pour ne pas remplir la grille hors de ses limites
         //Les positions des personnes changent meme apres avoir quitté la grille
-        if(x < grid.size()) {
+        if(x < (int)grid.size()) {
             grid[x][y] = p;
         }
     }
 
     if(sig) {
 
-        if(grid.size() <= stageCount - stageCountMax) {
+        if(stageCount - stageCountMax >= (int)grid.size()) {
             for(int i = 0; i < width; i++) {
                 grid[length-1][i] = nullptr;
                 lastRowFlag = true;
@@ -150,9 +150,9 @@ vector<Person*> Demonstration::getLeaders() const {
     vector<Person*> leaders;
 
     // On parcourt chaque groupe
-    for (Group* group : procession->getGroups()) {
+    for (Group* g : procession->getGroups()) {
         // On ajoute le leader de chaque groupe à la liste des leaders si le groupe n'est pas vide
-        
+        leaders.push_back(&g->getLeader());
     }
 
     return leaders;
