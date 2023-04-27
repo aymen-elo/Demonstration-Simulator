@@ -16,11 +16,13 @@ class Procession {
     private:
         std::string name;
         std::list<Group*> groups;
+        int size;
 
     public:
         Procession(const std::string & name);
         ~Procession();
 
+        int getSize() const;
         std::string getName() const;
         Person& getPerson(int id) const;
         std::list<Group*> getGroups() const;
