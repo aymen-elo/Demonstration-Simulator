@@ -1,5 +1,8 @@
 #include "procession.hpp"
+#include "couleur.hpp"
 
+#include <string>
+#include <memory>
 #include <algorithm>
 #include <iostream>
 using namespace std;
@@ -166,43 +169,51 @@ void Procession::removePerson(int id){
 
 
 /* Trier les groupes du cortège par ordre alphabétique des couleurs
+** L'exception est levée si le cortège est vide donc pas de tri
 */
-void Procession::sortColor(){
-    quickSortColor(groups.begin(), groups.end()); 
+void Procession::sortColor() {
+
+    try {
+        //Cas de cortège vide
+        if (groups.empty()) {
+            throw runtime_error("Le Cortège est vide");
+        }
+
+        //Lambda expression : la fonction prend deux pointeurs de groupes 
+        //(gA et gB), récupère leurs couleurs respectives, et les compare.
+        groups.sort([](const Group* gA, const Group* gB) {
+            string colA = gA->getColor();
+            string colB = gB->getColor();
+          
+            //Renvoyer true si la couleur de gA précède alphabétiquement la couleur de gB
+            return colA < colB;
+        });
+
+    }catch(const runtime_error e) {
+        cout<<"erreur sortColor - "<<e.what()<<endl;
+    }
 }
 
-/* Tri rapide implémenté pour la SDC du cortège utilisée
-** @param begin iterateur vers le début
-** @param end itérateur vers la fin
+/* Trier les groupes par leurs traille de manière croissante
 */
-void Procession::quickSortColor(list<Group*>::iterator begin, list<Group*>::iterator end){
-    
-    if (distance(begin,end) < 2){
-      return;
-    }
-    else{
-          list<Group*>::iterator pivot = next(begin, distance(begin,end)/2);
-          list<Group*>::iterator middle = partition(begin, end, [pivot](const Group* group){
-            return (group->getColor() < (*pivot)->getColor());
-          });
-          // Recusrive de trier le groupe par couleur//
-          quickSortColor(begin, middle); 
-          quickSortColor(middle,end); 
+void Procession::sortSize(){
+
+    //Boucler pour chaque groupe du cortège
+    for (auto it1 = groups.begin(); it1 != groups.end(); it1++) {
+
+        //Boucler pour chaque groupe à partir du groupe actuel (it1)
+        //jusqu'au début de la liste de groupes du cortège
+        for (auto it2 = it1; it2 != groups.begin(); it2--) {
+        
+            //On échange les positions dans le cas ou la taille à *it2
+            //est plus grande que celle du groupe précedent
+            if ( (*it2)->getSize() > (*prev(it2))->getSize() ) {
+
+                swap(*it2,*(std::prev(it2)));
+            }
+        }
     }
 }
-
-// void Procession::sortSize(){
-//     for (auto it1 = groups.begin(); it1 != groups.end(); it1++)
-//     {
-//         for (auto it2 = it1; it2 != groups.begin(); it2--)
-//         {
-//             if ((*it2)->getSize() > prev(*it2)->getSize())
-//             {
-//                 swap(it2, prev(it2));
-//             }
-//         }
-//     }
-// }
 
 
 //******************************************************************************************

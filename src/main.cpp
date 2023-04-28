@@ -108,10 +108,10 @@ int main(){
 
     cout<<endl<<endl;
 
-    d->removePerson(0);
+    pr->sortSize();
 
-    while(!d->hasEnded()) {
-        d->simStage();
+    for(Group* g : pr->getGroups()) {
+        displayGroupMembers(g);
     }
 
     cout<<endl<<"Fin";

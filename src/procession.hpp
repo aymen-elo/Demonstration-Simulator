@@ -14,6 +14,9 @@ class Procession {
     private:
         std::string name;
         std::list<Group*> groups;
+
+        //Indique le nombre de personnes 
+        //au total dans le cortège
         int size;
 
     public:
@@ -31,7 +34,6 @@ class Procession {
         void removePerson(int id);
 
         void sortColor();
-        void quickSortColor(std::list<Group*>::iterator begin, std::list<Group*>::iterator end); 
         void sortSize();
 
         class ProcessIterator {
@@ -49,6 +51,10 @@ class Procession {
 
                 bool operator!=(const ProcessIterator& other) const {
                     return group_it != other.group_it;
+                }
+
+                bool operator<(const ProcessIterator& other) const {
+                    return (*(*group_it)).getSize() < (*(*other.group_it)).getSize();
                 }
 
                 ProcessIterator operator++() {
