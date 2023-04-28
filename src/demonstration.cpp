@@ -115,26 +115,22 @@ void Demonstration::updatePosition(int id) {
     p.setPosition(updatedPosition);
 }
 
-pair<int,int> old;
-/*Decaler les positions des personnes après celle de l'id en param
-*/
+
 void Demonstration::shiftPositions(int id) {
 
-    pair<int,int> temp;
-
-    for(PersonPos pp : excludedPeople) {
-        if(pp.id == id){
-            old = {pp.x, pp.y};
-            break;
-        }
-    }
-
     for(int i = id + 1; i < numPeople; i++) {
+        
         Person &p = procession->getPerson(i);
+        
+        int temp = ((p.getPosition().second - 1)%width + width)%width;
 
-        temp = p.getPosition();
-        p.setPosition(old);
-        old = temp;
+        if(temp == width - 1) {
+            //cout<<p.getPosition().first + 1<<temp<<" ";
+            p.setPosition({p.getPosition().first + 1, temp});
+        }else{
+            //cout<<p.getPosition().first + 1<<temp<<" ";
+            p.setPosition({p.getPosition().first, temp});
+        }
     }
 }
 
@@ -167,7 +163,7 @@ void Demonstration::simStage() {
         }catch(invalid_argument e){
 
             if(exclude){
-                //shiftPositions(i);
+                shiftPositions(i);
             }
             continue;
         }
@@ -222,6 +218,8 @@ void Demonstration::simStage() {
     displayGrid();
 
     stageCount++;
+
+
 }
 
 /* Afficher la grille sur laquelle se déplacent les personnes de la manifestation

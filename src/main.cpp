@@ -108,6 +108,8 @@ int main(){
 
     cout<<endl<<endl;
 
+    d->removePerson(0);
+
     while(!d->hasEnded()) {
         d->simStage();
     }
