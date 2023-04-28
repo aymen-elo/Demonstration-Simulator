@@ -71,7 +71,13 @@ Person Demonstration::getPerson(int id) {
 }
 
 void Demonstration::removePerson(int id) {
+    
+    Person p = procession->getPerson(id);
+
+    excludedPeople.push_back({id, p.getPosition().first, p.getPosition().second});
+
     procession->removePerson(id);
+    exclude = true;
 }
 
 vector<Person*> Demonstration::getLeaders() const {
@@ -109,6 +115,31 @@ void Demonstration::updatePosition(int id) {
     p.setPosition(updatedPosition);
 }
 
+pair<int,int> old;
+/*Decaler les positions des personnes après celle de l'id en param
+*/
+void Demonstration::shiftPositions(int id) {
+
+    pair<int,int> temp;
+
+    for(PersonPos pp : excludedPeople) {
+        if(pp.id == id){
+            old = {pp.x, pp.y};
+            break;
+        }
+    }
+
+    for(int i = id + 1; i < numPeople; i++) {
+        Person &p = procession->getPerson(i);
+
+        temp = p.getPosition();
+        p.setPosition(old);
+        old = temp;
+    }
+}
+
+
+
 /* Simuler une seule étape de la manifestation, donc un pas en avant
 */
 void Demonstration::simStage() {
@@ -131,7 +162,15 @@ void Demonstration::simStage() {
         }
 
         //La personne avance d'un pas
-        updatePosition(i);
+        try{
+            updatePosition(i);
+        }catch(invalid_argument e){
+
+            if(exclude){
+                //shiftPositions(i);
+            }
+            continue;
+        }
 
         Person *p = &procession->getPerson(i);
 
@@ -163,7 +202,7 @@ void Demonstration::simStage() {
 
         //Boucler uniquement pour la rangée 
         //contenant les dernières personnes du cortège
-        for(int i = (numPeople)%width; i < width; i++) {
+        for(int i = (numPeople)%width - excludedPeople.size(); i < width; i++) {
             grid[stageCount - stageCountMax][i] = nullptr;
         }
 
@@ -175,6 +214,8 @@ void Demonstration::simStage() {
             }
         }
     }
+
+    exclude = false;
 
     //Appel à l'affichage de grid
     //grid étant mise à jour à cet instant
