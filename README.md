@@ -12,4 +12,4 @@ Demonstrations and manifesting >:(
 Anh Nguyen & Aymen El ouagouti
 
 ## Project status
-In progress
+Completed
