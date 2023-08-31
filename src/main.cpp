@@ -1,3 +1,11 @@
+/***********************************
+@Authors Aymen EL OUAGOUTI
+         Anh NGUYEN
+GROUP 485 ASD2 - Nantes University
+************************************/
+
+
+
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
