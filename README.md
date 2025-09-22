@@ -1,8 +1,6 @@
-# Manifestation
+# Demonstrating 
 
-ON N'EST PAS CONTENTS !!!!!
-
-Le [rapport de projet](https://github.com/aymen-elo/Demonstration-Simulator/blob/main/Rapport%20de%20Projet%20-%20Manifestation.pdf) expliquant les choix faits et les problèmes rencontrés est disponible.
+The [French] [Project Report](https://github.com/aymen-elo/Demonstration-Simulator/blob/main/Rapport%20de%20Projet%20-%20Manifestation.pdf) goes into detail about the chosen data structures and problems encountered.
 
 ## Run the project
 ##### Open terminal
@@ -17,10 +15,13 @@ make
 
 ###### 
 ## Description
-Demonstrations and manifesting >:(
 
-Il s'agit de simuler sur une interface console une manifestation autour de sujets définis par groupe sous un unique cortège.
-Chaque groupe est constitué de plusieurs personnes qui peuvent être extraites en cas d'urgence.
+Command-line interface representation of people demonstrating in groups as part of one procession.
+
+A Person can be removed in case of an emergency.
+
+
+All methods are of a constant O(1) complexity.
 
 ## Authors
 Anh Nguyen & Aymen El ouagouti
